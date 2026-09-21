@@ -839,23 +839,20 @@ if (otpForm) {
 
 
     // ================= RECAPTCHA =================
-
-  async function setupPhoneVerification() {
+async function setupPhoneVerification() {
     try {
-        if (recaptchaVerifier) {
-            recaptchaVerifier.clear();
-            recaptchaVerifier = null;
-        }
-
         recaptchaVerifier = new RecaptchaVerifier(
             "recaptcha-container",
             {
                 size: "normal",
+
                 callback: () => {
                     console.log("reCAPTCHA completed");
                 },
+
                 "expired-callback": () => {
                     confirmationResult = null;
+
                     showToast(
                         "reCAPTCHA expired. Complete it again.",
                         "error"
