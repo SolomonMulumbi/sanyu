@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Bibo Medical</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header class="app-header">
+  <div class="header-brand">
+    <span class="small-logo">+</span>
+    <span>Bibo Medical System</span>
+  </div>
+
+  <div id="profileAvatar">JM</div>
+</header>
+
+<main class="app-content">
+
+  <section class="welcome-section">
+    <p>Good morning,</p>
+    <h1 id="marketeerName">Marketeer</h1>
+    <span>Field Marketeer</span>
+  </section>
+
+  <section class="stats-grid">
+
+    <article class="stat-card">
+      <span>My Registrations</span>
+      <strong id="totalRegistrations">0</strong>
+      <small id="monthlyRegistrationChange">This month</small>
+    </article>
+
+    <article class="stat-card">
+      <span>My Earnings</span>
+      <strong>
+        UGX <span id="totalEarnings">0</span>
+      </strong>
+      <small>UGX 1,000 per verified rider</small>
+    </article>
+
+  </section>
+
+  <section class="quick-actions">
+
+    <a href="register-rider.html" class="action-card">
+      <span>👥</span>
+      <strong>Register Rider</strong>
+    </a>
+
+    <a href="stages.html" class="action-card">
+      <span>📍</span>
+      <strong>My Stages</strong>
+    </a>
+
+    <a href="riders.html" class="action-card">
+      <span>☰</span>
+      <strong>View Riders</strong>
+    </a>
+
+    <a href="earnings.html" class="action-card">
+      <span>💰</span>
+      <strong>My Earnings</strong>
+    </a>
+
+  </section>
+
+  <section class="section">
+
+    <div class="section-header">
+      <h2>Recent Registrations</h2>
+      <a href="riders.html">View All</a>
+    </div>
+
+    <div id="recentRiders">
+      <div class="empty-state">
+        No riders registered yet.
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<nav class="bottom-nav">
+  <a href="dashboard.html" class="active">Home</a>
+  <a href="register-rider.html">Register</a>
+  <a href="riders.html">Riders</a>
+  <a href="stages.html">Stages</a>
+  <a href="profile.html">Profile</a>
+</nav>
+
+<script src="script.js" type="module"></script>
+</body>
+</html>

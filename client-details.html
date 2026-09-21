@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Details | Bibo Medical System</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header class="page-header">
+  <a href="riders.html" class="back-btn">←</a>
+  <h1>Registration Details</h1>
+</header>
+
+<main class="app-content">
+
+  <section class="client-profile-header">
+    <div class="client-profile-avatar" id="detailClientInitials">--</div>
+
+    <div class="client-profile-main">
+      <span class="detail-client-type" id="detailClientType">
+        Registration
+      </span>
+
+      <h2 id="detailClientName">Loading...</h2>
+
+      <span class="client-status pending" id="detailClientStatus">
+        Pending
+      </span>
+    </div>
+  </section>
+
+
+  <!-- CONTACT INFORMATION -->
+
+  <section class="detail-section">
+
+    <div class="detail-section-heading">
+      <span>Contact Information</span>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-row-icon">☎</div>
+
+      <div class="detail-row-content">
+        <small>Phone Number</small>
+        <strong id="detailClientPhone">-</strong>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- RIDER INFORMATION -->
+
+  <section class="detail-section" id="detailRiderSection">
+
+    <div class="detail-section-heading">
+      <span>Rider Information</span>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-row-content">
+        <small>National ID / NIN</small>
+        <strong id="detailClientNationalId">-</strong>
+      </div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-row-content">
+        <small>Boda Boda Stage</small>
+        <strong id="detailClientStage">-</strong>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- REGISTRATION INFORMATION -->
+
+  <section class="detail-section">
+
+    <div class="detail-section-heading">
+      <span>Registration Information</span>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-row-content">
+        <small>Registered By</small>
+        <strong id="detailMarketerName">-</strong>
+      </div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-row-content">
+        <small>Date Registered</small>
+        <strong id="detailRegistrationDate">-</strong>
+      </div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-row-content">
+        <small>Phone Verification</small>
+        <strong id="detailVerificationStatus">Pending Verification</strong>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- PENDING VERIFICATION ACTION -->
+
+  <section id="verificationAction" class="verification-action hidden">
+
+    <div>
+      <strong>Phone not verified</strong>
+      <p>This registration is still waiting for phone verification.</p>
+    </div>
+
+    <button type="button" class="primary-btn" id="verifyClientPhoneBtn">
+      Verify Phone Number
+    </button>
+
+  </section>
+
+</main>
+
+
+<nav class="bottom-nav">
+
+  <a href="dashboard.html" class="nav-item">
+    <span>⌂</span>
+    <small>Home</small>
+  </a>
+
+  <a href="register-rider.html" class="nav-item">
+    <span>＋</span>
+    <small>Register</small>
+  </a>
+
+  <a href="riders.html" class="nav-item active">
+    <span>♙</span>
+    <small>Clients</small>
+  </a>
+
+  <a href="stages.html" class="nav-item">
+    <span>⌖</span>
+    <small>Stages</small>
+  </a>
+
+  <a href="profile.html" class="nav-item">
+    <span>●</span>
+    <small>Profile</small>
+  </a>
+
+</nav>
+
+<script type="module" src="script.js"></script>
+
+</body>
+</html>
