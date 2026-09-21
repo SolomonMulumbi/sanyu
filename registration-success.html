@@ -1,143 +1,113 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registration Successful</title>
-<link rel="stylesheet" href="css/style.css"></head>
+
+  <title>Registration Successful | SANYU HOSPITAL</title>
+
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="shortcut icon" type="image/png" href="icon.png">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <link rel="stylesheet" href="css/style.css?v=21">
+</head>
 
 <body>
 
 <main class="success-container">
 
-  <div class="success-icon">✓</div>
+  <!-- SUCCESS ICON -->
 
-  <h1>Rider Registered!</h1>
+  <div class="success-icon">
+    ✓
+  </div>
+
+
+  <!-- REGISTRATION MESSAGE -->
+
+  <h1 id="registrationSuccessTitle">
+    Registration Successful!
+  </h1>
 
   <h2 id="registeredRiderName">
-    Rider Name
+    Registered Client
   </h2>
+
+
+  <!-- CLIENT SUMMARY -->
 
   <div class="rider-summary">
 
     <p>
       Phone:
-      <strong id="registeredRiderPhone"></strong>
+      <strong id="registeredRiderPhone">
+        -
+      </strong>
     </p>
 
-    <p>
+    <p id="registeredStageRow">
       Stage:
-      <strong id="registeredRiderStage"></strong>
+      <strong id="registeredRiderStage">
+        -
+      </strong>
     </p>
 
   </div>
 
-  <div class="commission-card">
 
-    <span>Registration Reward</span>
+  <!-- COMMISSION / STATUS -->
+
+  <div
+    class="commission-card"
+    id="registrationCommissionCard">
+
+    <span id="registrationRewardLabel">
+      Registration Reward
+    </span>
 
     <strong>
-      UGX <span id="earnedCommission">1,000</span>
+      UGX <span id="earnedCommission">0</span>
     </strong>
 
-    <small>
-      Commission added to your account
+    <small id="registrationRewardMessage">
+      Commission status will appear here.
     </small>
 
   </div>
 
-  <div class="discount-message">
-    This rider is now eligible for approved Bibo Medical
-    Boda Boda healthcare discounts.
+
+  <!-- PROGRAM MESSAGE -->
+
+  <div
+    class="discount-message"
+    id="registrationSuccessMessage">
+
+    Registration completed successfully.
+
   </div>
+
+
+  <!-- ACTIONS -->
 
   <a
     href="register-rider.html"
-    class="primary-btn">
-    Register Another Rider
+    class="primary-btn"
+    id="registerAnotherBtn">
+    New Registration
   </a>
 
   <a
     href="riders.html"
     class="secondary-btn">
-    View Registered Riders
+    View My Registrations
   </a>
 
 </main>
 
-<script src="script.js?v=8" type="module"></script></body>
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registration Successful</title>
-<link rel="stylesheet" href="css/style.css?v=21"></head>
 
-<body>
+<script src="script.js?v=21" type="module"></script>
 
-<main class="success-container">
-
-  <div class="success-icon">✓</div>
-
-  <h1>Rider Registered!</h1>
-
-  <h2 id="registeredRiderName">
-    Rider Name
-  </h2>
-
-  <div class="rider-summary">
-
-    <p>
-      Phone:
-      <strong id="registeredRiderPhone"></strong>
-    </p>
-
-    <p>
-      Stage:
-      <strong id="registeredRiderStage"></strong>
-    </p>
-
-  </div>
-
-  <div class="commission-card">
-
-    <span>Registration Reward</span>
-
-    <strong>
-      UGX <span id="earnedCommission">1,000</span>
-    </strong>
-
-    <small>
-      Commission added to your account
-    </small>
-
-  </div>
-
-  <div class="discount-message">
-    This rider is now eligible for approved Bibo Medical
-    Boda Boda healthcare discounts.
-  </div>
-
-  <a
-    href="register-rider.html"
-    class="primary-btn">
-    Register Another Rider
-  </a>
-
-  <a
-    href="riders.html"
-    class="secondary-btn">
-    View Registered Riders
-  </a>
-
-</main>
-
-<script src="script.js?v=21" type="module"></script></body>
-<<<<<<< HEAD
->>>>>>> f4fa50e (Add login background)
-=======
->>>>>>> f4fa50e (Add login background)
+</body>
 </html>

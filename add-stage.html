@@ -98,11 +98,16 @@
 =======
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Add Stage</title>
-<link rel="stylesheet" href="css/style.css?v=21"></head>
+
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="stylesheet" href="css/style.css?v=21">
+</head>
 
 <body>
 
@@ -113,85 +118,77 @@
 
 <main class="app-content">
 
-<form id="stageRegistrationForm">
+  <form id="stageRegistrationForm">
 
-  <div class="form-group">
-    <label for="stageName">Stage Name *</label>
-    <input
-      type="text"
-      id="stageName"
-      placeholder="Example: Entebbe Airport Stage"
-      required
-    >
-  </div>
+    <div class="form-group">
+      <label for="stageName">Stage Name *</label>
+      <input
+        type="text"
+        id="stageName"
+        placeholder="Example: Entebbe Airport Stage"
+        required
+      >
+    </div>
 
-  <div class="form-group">
-    <label for="stageArea">Area / Location *</label>
-    <input
-      type="text"
-      id="stageArea"
-      placeholder="Example: Entebbe"
-      required
-    >
-  </div>
+    <div class="form-group">
+      <label for="stageArea">Area / Location *</label>
+      <input
+        type="text"
+        id="stageArea"
+        placeholder="Example: Entebbe"
+        required
+      >
+    </div>
 
-  <div class="form-group">
-    <label for="chairmanName">
-      Chairman / Stage Leader *
-    </label>
+    <div class="form-group">
+      <label for="chairmanName">Chairman / Stage Leader *</label>
+      <input
+        type="text"
+        id="chairmanName"
+        placeholder="Chairman's full name"
+        required
+      >
+    </div>
 
-    <input
-      type="text"
-      id="chairmanName"
-      placeholder="Chairman's full name"
-      required
-    >
-  </div>
+    <div class="form-group">
+      <label for="chairmanPhone">Chairman Phone *</label>
+      <input
+        type="tel"
+        id="chairmanPhone"
+        placeholder="07XX XXX XXX"
+        required
+      >
+    </div>
 
-  <div class="form-group">
-    <label for="chairmanPhone">
-      Chairman Phone *
-    </label>
+    <div class="form-group">
+      <label for="stageDistrict">District</label>
+      <input
+        type="text"
+        id="stageDistrict"
+        placeholder="Example: Wakiso"
+      >
+    </div>
 
-    <input
-      type="tel"
-      id="chairmanPhone"
-      placeholder="07XX XXX XXX"
-      required
-    >
-  </div>
+    <div class="form-group">
+      <label for="stageNotes">Notes</label>
+      <textarea
+        id="stageNotes"
+        placeholder="Additional information about the stage"></textarea>
+    </div>
 
-  <div class="form-group">
-    <label for="stageDistrict">District</label>
+    <button
+      type="submit"
+      id="saveStageBtn"
+      class="primary-btn">
+      Register Stage
+    </button>
 
-    <input
-      type="text"
-      id="stageDistrict"
-      placeholder="Example: Wakiso"
-    >
-  </div>
-
-  <div class="form-group">
-    <label for="stageNotes">Notes</label>
-
-    <textarea
-      id="stageNotes"
-      placeholder="Additional information about the stage">
-    </textarea>
-  </div>
-
-  <button
-    type="submit"
-    id="saveStageBtn"
-    class="primary-btn">
-    Register Stage
-  </button>
-
-</form>
+  </form>
 
 </main>
 
 <script src="script.js?v=21" type="module"></script>
+
 </body>
 <<<<<<< HEAD
 >>>>>>> f4fa50e (Add login background)

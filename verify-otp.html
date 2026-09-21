@@ -1,78 +1,207 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Verify Registration | SANYU HOSPITAL</title>
-<link rel="stylesheet" href="css/style.css"></head>
+
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="shortcut icon" type="image/png" href="icon.png">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <link rel="stylesheet" href="css/style.css?v=21">
+</head>
 
 <body>
 
 <header class="page-header">
-  <a href="register-rider.html" class="back-btn">←</a>
+
+  <a
+    href="register-rider.html"
+    class="back-btn"
+    aria-label="Back to registration">
+    ←
+  </a>
+
   <h1>Verify Registration</h1>
+
 </header>
+
 
 <main class="otp-container">
 
-  <div class="otp-icon">📱</div>
+  <!-- OTP HEADER -->
 
-  <span class="registration-label">PHONE VERIFICATION</span>
+  <div class="otp-icon">
+    📱
+  </div>
 
-  <h1>Enter Verification Code</h1>
+  <span class="registration-label">
+    PHONE VERIFICATION
+  </span>
+
+  <h1>
+    Enter Verification Code
+  </h1>
 
   <p id="otpDescription">
     Enter the 6-digit verification code sent to
   </p>
 
-  <strong id="otpPhoneNumber">07XX XXX XXX</strong>
+  <strong id="otpPhoneNumber">
+    07XX XXX XXX
+  </strong>
+
+
+  <!-- REGISTRATION INFORMATION -->
 
   <div class="otp-registration-info">
-    <span id="otpRegistrationType">Registration</span>
+
+    <span id="otpRegistrationType">
+      Registration
+    </span>
+
     <strong id="otpRegistrationName"></strong>
+
   </div>
-<div class="recaptcha-section">
-    <div id="recaptchaLoading" class="recaptcha-loading">
-        <div class="recaptcha-spinner"></div>
-        <div>
-            <strong>Preparing security check...</strong>
-            <span>Please wait a moment</span>
-        </div>
+
+
+  <!-- RECAPTCHA -->
+
+  <div class="recaptcha-section">
+
+    <div
+      id="recaptchaLoading"
+      class="recaptcha-loading">
+
+      <div class="recaptcha-spinner"></div>
+
+      <div>
+
+        <strong>
+          Preparing security check...
+        </strong>
+
+        <span>
+          Please wait a moment
+        </span>
+
+      </div>
+
     </div>
 
-    <div id="recaptcha-container" class="recaptcha-box"></div>
-</div>
-<button
+
+    <div
+      id="recaptcha-container"
+      class="recaptcha-box">
+    </div>
+
+  </div>
+
+
+  <!-- SEND OTP -->
+
+  <button
     type="button"
     id="sendOtpBtn"
     class="primary-btn"
     disabled>
     Send Verification Code
-</button>
+  </button>
 
+
+  <!-- OTP FORM -->
 
   <form id="otpForm">
 
     <div class="otp-inputs">
 
-      <input type="text" maxlength="1" inputmode="numeric" autocomplete="one-time-code" class="otp-digit">
-      <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
-      <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
-      <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
-      <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
-      <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
+      <input
+        type="text"
+        maxlength="1"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        autocomplete="one-time-code"
+        class="otp-digit"
+        aria-label="Verification digit 1"
+      >
+
+      <input
+        type="text"
+        maxlength="1"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        class="otp-digit"
+        aria-label="Verification digit 2"
+      >
+
+      <input
+        type="text"
+        maxlength="1"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        class="otp-digit"
+        aria-label="Verification digit 3"
+      >
+
+      <input
+        type="text"
+        maxlength="1"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        class="otp-digit"
+        aria-label="Verification digit 4"
+      >
+
+      <input
+        type="text"
+        maxlength="1"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        class="otp-digit"
+        aria-label="Verification digit 5"
+      >
+
+      <input
+        type="text"
+        maxlength="1"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        class="otp-digit"
+        aria-label="Verification digit 6"
+      >
 
     </div>
 
+
+    <!-- OTP MESSAGE -->
+
     <div id="otpMessage"></div>
 
+
+    <!-- RESEND -->
+
     <p class="resend-text">
+
       Didn't receive the code?
-      <button type="button" id="resendOtpBtn">Resend code</button>
+
+      <button
+        type="button"
+        id="resendOtpBtn">
+        Resend code
+      </button>
+
     </p>
 
-    <button type="submit" id="verifyOtpBtn" class="primary-btn">
+
+    <!-- VERIFY -->
+
+    <button
+      type="submit"
+      id="verifyOtpBtn"
+      class="primary-btn">
       Verify & Continue
     </button>
 
@@ -80,93 +209,8 @@
 
 </main>
 
-<script src="script.js?v=8" type="module"></script>
+
+<script src="script.js?v=21" type="module"></script>
+
+</body>
 </html>
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verify Registration | SANYU HOSPITAL</title>
-<link rel="stylesheet" href="css/style.css?v=21"></head>
-
-<body>
-
-<header class="page-header">
-  <a href="register-rider.html" class="back-btn">←</a>
-  <h1>Verify Registration</h1>
-</header>
-
-<main class="otp-container">
-
-  <div class="otp-icon">📱</div>
-
-  <span class="registration-label">PHONE VERIFICATION</span>
-
-  <h1>Enter Verification Code</h1>
-
-  <p id="otpDescription">
-    Enter the 6-digit verification code sent to
-  </p>
-
-  <strong id="otpPhoneNumber">07XX XXX XXX</strong>
-
-  <div class="otp-registration-info">
-    <span id="otpRegistrationType">Registration</span>
-    <strong id="otpRegistrationName"></strong>
-  </div>
-<div class="recaptcha-section">
-    <div id="recaptchaLoading" class="recaptcha-loading">
-        <div class="recaptcha-spinner"></div>
-        <div>
-            <strong>Preparing security check...</strong>
-            <span>Please wait a moment</span>
-        </div>
-    </div>
-
-    <div id="recaptcha-container" class="recaptcha-box"></div>
-</div>
-<button
-    type="button"
-    id="sendOtpBtn"
-    class="primary-btn"
-    disabled>
-    Send Verification Code
-</button>
-
-
-  <form id="otpForm">
-
-    <div class="otp-inputs">
-
-      <input type="text" maxlength="1" inputmode="numeric" autocomplete="one-time-code" class="otp-digit">
-      <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
-      <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
-      <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
-      <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
-      <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
-
-    </div>
-
-    <div id="otpMessage"></div>
-
-    <p class="resend-text">
-      Didn't receive the code?
-      <button type="button" id="resendOtpBtn">Resend code</button>
-    </p>
-
-    <button type="submit" id="verifyOtpBtn" class="primary-btn">
-      Verify & Continue
-    </button>
-
-  </form>
-
-</main>
-
-<<<<<<< HEAD
-<script src="script.js?v=21" type="module"></script></html>
->>>>>>> f4fa50e (Add login background)
-=======
-<script src="script.js?v=21" type="module"></script></html>
->>>>>>> f4fa50e (Add login background)

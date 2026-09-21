@@ -1,223 +1,229 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Dashboard | Bibo Medical</title>
-<link rel="stylesheet" href="css/style.css"></head>
+
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="shortcut icon" type="image/png" href="icon.png">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <link rel="stylesheet" href="css/style.css?v=21">
+</head>
 
 <body>
 
 <header class="app-header">
+
   <div class="header-brand">
     <span class="small-logo">+</span>
     <span>SANYU HOSPITAL</span>
   </div>
 
-  <a href="profile.html" class="dashboard-profile">
-    <div id="profileAvatar" class="profile-avatar">
-      <span id="profileInitials">M</span>
-      <img id="profilePhoto" src="" alt="Profile" class="hidden">
+  <a
+    href="profile.html"
+    class="dashboard-profile-link"
+    aria-label="Open profile"
+  >
+    <div
+      id="dashboardProfileAvatar"
+      class="dashboard-profile-avatar"
+    >
+      <span id="dashboardProfileInitials">M</span>
+
+      <img
+        id="dashboardProfilePhoto"
+        src=""
+        alt="Profile"
+        class="hidden"
+      >
     </div>
   </a>
+
 </header>
+
 
 <main class="app-content">
 
+  <!-- WELCOME -->
+
   <section class="welcome-section">
-    <p id="dashboardGreeting">Good morning,</p>
-    <h1 id="marketeerName">Marketeer</h1>
-    <span>Field Marketeer</span>
+
+    <p id="dashboardGreeting">
+      Good morning,
+    </p>
+
+    <h1 id="marketeerName">
+      Marketeer
+    </h1>
+
+    <span>
+      Field Marketeer
+    </span>
+
   </section>
+
+
+  <!-- STATISTICS -->
 
   <section class="stats-grid">
 
     <article class="stat-card">
-      <span>My Registrations</span>
-      <strong id="totalRegistrations">0</strong>
-      <small id="monthlyRegistrationChange">This month</small>
+
+      <span>
+        My Registrations
+      </span>
+
+      <strong id="totalRegistrations">
+        0
+      </strong>
+
+      <small id="monthlyRegistrationChange">
+        This month
+      </small>
+
     </article>
 
+
     <article class="stat-card">
-      <span>My Earnings</span>
+
+      <span>
+        My Earnings
+      </span>
+
       <strong>
         UGX <span id="totalEarnings">0</span>
       </strong>
-      <small>Verified referral commissions</small>
+
+      <small>
+        Verified referral commissions
+      </small>
+
     </article>
 
   </section>
 
+
+  <!-- QUICK ACTIONS -->
+
   <section class="quick-actions">
 
-    <a href="register-rider.html" class="action-card">
+    <a
+      href="register-rider.html"
+      class="action-card"
+    >
       <span>👥</span>
       <strong>New Registration</strong>
     </a>
 
-    <a href="stages.html" class="action-card">
+
+    <a
+      href="stages.html"
+      class="action-card"
+    >
       <span>📍</span>
       <strong>My Stages</strong>
     </a>
 
-    <a href="riders.html" class="action-card">
+
+    <a
+      href="riders.html"
+      class="action-card"
+    >
       <span>☰</span>
       <strong>My Registrations</strong>
     </a>
 
-    <a href="earnings.html" class="action-card">
+
+    <a
+      href="earnings.html"
+      class="action-card"
+    >
       <span>💰</span>
       <strong>My Earnings</strong>
     </a>
 
   </section>
 
+
+  <!-- RECENT REGISTRATIONS -->
+
   <section class="section">
 
     <div class="section-header">
-      <h2>Recent Registrations</h2>
-      <a href="riders.html">View All</a>
+
+      <h2>
+        Recent Registrations
+      </h2>
+
+      <a href="riders.html">
+        View All
+      </a>
+
     </div>
 
-<div id="recentRegistrations">
 
-  <div class="dashboard-recent-loading">
+    <div id="recentRegistrations">
 
-    <div class="dashboard-small-spinner"></div>
+      <div class="dashboard-recent-loading">
 
-    <div>
-      <strong>Loading registrations...</strong>
-      <span>Fetching your latest records</span>
+        <div class="dashboard-small-spinner"></div>
+
+        <div>
+
+          <strong>
+            Loading registrations...
+          </strong>
+
+          <span>
+            Fetching your latest records
+          </span>
+
+        </div>
+
+      </div>
+
     </div>
 
-  </div>
-
-</div>
   </section>
 
 </main>
 
+
+<!-- BOTTOM NAVIGATION -->
+
 <nav class="bottom-nav">
-  <a href="dashboard.html" class="active">Home</a>
-  <a href="register-rider.html">Register</a>
-  <a href="riders.html">Registrations</a>
-  <a href="stages.html">Stages</a>
-  <a href="profile.html">Profile</a>
-</nav>
 
-<script src="script.js?v=8" type="module"></script></body>
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard | Bibo Medical</title>
-<link rel="stylesheet" href="css/style.css?v=21"></head>
-
-<body>
-
-<header class="app-header">
-  <div class="header-brand">
-    <span class="small-logo">+</span>
-    <span>SANYU HOSPITAL</span>
-  </div>
-
-  <a href="profile.html" class="dashboard-profile">
-    <div id="profileAvatar" class="profile-avatar">
-      <span id="profileInitials">M</span>
-      <img id="profilePhoto" src="" alt="Profile" class="hidden">
-    </div>
+  <a
+    href="dashboard.html"
+    class="active"
+  >
+    Home
   </a>
-</header>
 
-<main class="app-content">
+  <a href="register-rider.html">
+    Register
+  </a>
 
-  <section class="welcome-section">
-    <p id="dashboardGreeting">Good morning,</p>
-    <h1 id="marketeerName">Marketeer</h1>
-    <span>Field Marketeer</span>
-  </section>
+  <a href="riders.html">
+    Registrations
+  </a>
 
-  <section class="stats-grid">
+  <a href="stages.html">
+    Stages
+  </a>
 
-    <article class="stat-card">
-      <span>My Registrations</span>
-      <strong id="totalRegistrations">0</strong>
-      <small id="monthlyRegistrationChange">This month</small>
-    </article>
+  <a href="profile.html">
+    Profile
+  </a>
 
-    <article class="stat-card">
-      <span>My Earnings</span>
-      <strong>
-        UGX <span id="totalEarnings">0</span>
-      </strong>
-      <small>Verified referral commissions</small>
-    </article>
-
-  </section>
-
-  <section class="quick-actions">
-
-    <a href="register-rider.html" class="action-card">
-      <span>👥</span>
-      <strong>New Registration</strong>
-    </a>
-
-    <a href="stages.html" class="action-card">
-      <span>📍</span>
-      <strong>My Stages</strong>
-    </a>
-
-    <a href="riders.html" class="action-card">
-      <span>☰</span>
-      <strong>My Registrations</strong>
-    </a>
-
-    <a href="earnings.html" class="action-card">
-      <span>💰</span>
-      <strong>My Earnings</strong>
-    </a>
-
-  </section>
-
-  <section class="section">
-
-    <div class="section-header">
-      <h2>Recent Registrations</h2>
-      <a href="riders.html">View All</a>
-    </div>
-
-<div id="recentRegistrations">
-
-  <div class="dashboard-recent-loading">
-
-    <div class="dashboard-small-spinner"></div>
-
-    <div>
-      <strong>Loading registrations...</strong>
-      <span>Fetching your latest records</span>
-    </div>
-
-  </div>
-
-</div>
-  </section>
-
-</main>
-
-<nav class="bottom-nav">
-  <a href="dashboard.html" class="active">Home</a>
-  <a href="register-rider.html">Register</a>
-  <a href="riders.html">Registrations</a>
-  <a href="stages.html">Stages</a>
-  <a href="profile.html">Profile</a>
 </nav>
 
-<script src="script.js?v=21" type="module"></script></body>
-<<<<<<< HEAD
->>>>>>> f4fa50e (Add login background)
-=======
->>>>>>> f4fa50e (Add login background)
+
+<script src="script.js?v=21" type="module"></script>
+
+</body>
 </html>

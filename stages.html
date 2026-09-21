@@ -1,103 +1,115 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Boda Stages</title>
-<link rel="stylesheet" href="css/style.css"></head>
+
+  <title>Boda Boda Stages | SANYU HOSPITAL</title>
+
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="shortcut icon" type="image/png" href="icon.png">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <link rel="stylesheet" href="css/style.css?v=21">
+</head>
 
 <body>
 
 <header class="page-header">
-  <a href="dashboard.html">←</a>
+
+  <a
+    href="dashboard.html"
+    class="back-btn"
+    aria-label="Back to dashboard">
+    ←
+  </a>
+
   <h1>Stages</h1>
+
 </header>
+
 
 <main class="app-content">
 
+  <!-- SEARCH -->
+
   <div class="search-box">
+
     <input
       type="search"
       id="stageSearch"
       placeholder="Search stage..."
+      autocomplete="off"
     >
+
   </div>
 
-  <a href="add-stage.html" class="primary-btn">
+
+  <!-- ADD STAGE -->
+
+  <a
+    href="add-stage.html"
+    class="primary-btn">
     + Add New Stage
   </a>
+
+
+  <!-- STAGE LIST -->
+
   <section id="stageList">
 
     <div class="empty-state">
-      Loading stages...
+
+      <div class="empty-icon">
+        📍
+      </div>
+
+      <h3>
+        Loading stages...
+      </h3>
+
+      <p>
+        Please wait while we prepare your registered stages.
+      </p>
+
     </div>
 
   </section>
 
-
 </main>
 
+
+<!-- BOTTOM NAVIGATION -->
+
 <nav class="bottom-nav">
-  <a href="dashboard.html">Home</a>
-  <a href="register-rider.html">Register</a>
-  <a href="riders.html">Riders</a>
-  <a href="stages.html" class="active">Stages</a>
-  <a href="profile.html">Profile</a>
-</nav>
 
-<script src="script.js?v=8" type="module"></script></body>
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Boda Stages</title>
-<link rel="stylesheet" href="css/style.css?v=21"></head>
-
-<body>
-
-<header class="page-header">
-  <a href="dashboard.html">←</a>
-  <h1>Stages</h1>
-</header>
-
-<main class="app-content">
-
-  <div class="search-box">
-    <input
-      type="search"
-      id="stageSearch"
-      placeholder="Search stage..."
-    >
-  </div>
-
-  <a href="add-stage.html" class="primary-btn">
-    + Add New Stage
+  <a href="dashboard.html">
+    Home
   </a>
-  <section id="stageList">
 
-    <div class="empty-state">
-      Loading stages...
-    </div>
+  <a href="register-rider.html">
+    Register
+  </a>
 
-  </section>
+  <a href="riders.html">
+    Registrations
+  </a>
 
+  <a
+    href="stages.html"
+    class="active">
+    Stages
+  </a>
 
-</main>
+  <a href="profile.html">
+    Profile
+  </a>
 
-<nav class="bottom-nav">
-  <a href="dashboard.html">Home</a>
-  <a href="register-rider.html">Register</a>
-  <a href="riders.html">Riders</a>
-  <a href="stages.html" class="active">Stages</a>
-  <a href="profile.html">Profile</a>
 </nav>
 
-<script src="script.js?v=21" type="module"></script></body>
-<<<<<<< HEAD
->>>>>>> f4fa50e (Add login background)
-=======
->>>>>>> f4fa50e (Add login background)
+
+<script src="script.js?v=21" type="module"></script>
+
+</body>
 </html>
