@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | Bibo Medical</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=8">
 </head>
 
 <body>
@@ -12,16 +12,21 @@
 <header class="app-header">
   <div class="header-brand">
     <span class="small-logo">+</span>
-    <span>Bibo Medical System</span>
+    <span>Bibo MedSys</span>
   </div>
 
-  <div id="profileAvatar">JM</div>
+  <a href="profile.html" class="dashboard-profile">
+    <div id="profileAvatar" class="profile-avatar">
+      <span id="profileInitials">M</span>
+      <img id="profilePhoto" src="" alt="Profile" class="hidden">
+    </div>
+  </a>
 </header>
 
 <main class="app-content">
 
   <section class="welcome-section">
-    <p>Good morning,</p>
+    <p id="dashboardGreeting">Good morning,</p>
     <h1 id="marketeerName">Marketeer</h1>
     <span>Field Marketeer</span>
   </section>
@@ -39,7 +44,7 @@
       <strong>
         UGX <span id="totalEarnings">0</span>
       </strong>
-      <small>UGX 1,000 per verified rider</small>
+      <small>Verified referral commissions</small>
     </article>
 
   </section>
@@ -48,7 +53,7 @@
 
     <a href="register-rider.html" class="action-card">
       <span>👥</span>
-      <strong>Register Rider</strong>
+      <strong>New Registration</strong>
     </a>
 
     <a href="stages.html" class="action-card">
@@ -58,7 +63,7 @@
 
     <a href="riders.html" class="action-card">
       <span>☰</span>
-      <strong>View Riders</strong>
+      <strong>My Registrations</strong>
     </a>
 
     <a href="earnings.html" class="action-card">
@@ -75,12 +80,20 @@
       <a href="riders.html">View All</a>
     </div>
 
-    <div id="recentRiders">
-      <div class="empty-state">
-        No riders registered yet.
-      </div>
+<div id="recentRegistrations">
+
+  <div class="dashboard-recent-loading">
+
+    <div class="dashboard-small-spinner"></div>
+
+    <div>
+      <strong>Loading registrations...</strong>
+      <span>Fetching your latest records</span>
     </div>
 
+  </div>
+
+</div>
   </section>
 
 </main>
@@ -88,11 +101,11 @@
 <nav class="bottom-nav">
   <a href="dashboard.html" class="active">Home</a>
   <a href="register-rider.html">Register</a>
-  <a href="riders.html">Riders</a>
+  <a href="riders.html">Registrations</a>
   <a href="stages.html">Stages</a>
   <a href="profile.html">Profile</a>
 </nav>
 
-<script src="script.js" type="module"></script>
+<script src="script.js?v=5" type="module"></script>
 </body>
 </html>

@@ -591,32 +591,114 @@ function displayStages(stages) {
 
     if (!stages.length) {
         stageList.innerHTML = `
-            <div class="empty-state">
+            <div class="stage-empty">
+                <div class="stage-empty-icon">📍</div>
                 <h3>No stages registered</h3>
-                <p>Register the first Boda Boda stage.</p>
+                <p>Your registered Boda Boda stages will appear here.</p>
+                <a href="add-stage.html" class="stage-empty-button">
+                    + Register Stage
+                </a>
             </div>
         `;
         return;
     }
 
-    stageList.innerHTML = stages.map(stage => `
-        <div class="stage-card" data-name="${escapeHTML((stage.stageName || "").toLowerCase())}" data-area="${escapeHTML((stage.area || "").toLowerCase())}">
-            <div class="stage-card-top">
-                <div>
-                    <h3>${escapeHTML(stage.stageName)}</h3>
-                    <p>${escapeHTML(stage.area)}${stage.district ? `, ${escapeHTML(stage.district)}` : ""}</p>
+    stageList.innerHTML = stages.map(stage => {
+        const stageName = escapeHTML(stage.stageName || "Unnamed Stage");
+        const area = escapeHTML(stage.area || "Location not provided");
+        const district = stage.district
+            ? escapeHTML(stage.district)
+            : "";
+
+        const chairman = escapeHTML(
+            stage.chairmanName || "Not provided"
+        );
+
+        const phone = stage.chairmanPhone
+            ? formatPhone(stage.chairmanPhone)
+            : "Not provided";
+
+        const callPhone = stage.chairmanPhone
+            ? "+" + normalizePhone(stage.chairmanPhone)
+            : "";
+
+        return `
+            <div
+                class="stage-card"
+                data-name="${escapeHTML((stage.stageName || "").toLowerCase())}"
+                data-area="${escapeHTML((stage.area || "").toLowerCase())}"
+            >
+
+                <!-- LEFT SIDE -->
+                <div class="stage-left">
+
+                    <div class="stage-title-row">
+                        <div class="stage-location-icon">
+                            📍
+                        </div>
+
+                        <div class="stage-title-content">
+                            <div class="stage-name-line">
+                                <h3>${stageName}</h3>
+
+                                <span class="stage-active-badge">
+                                    <i></i>
+                                    Active
+                                </span>
+                            </div>
+
+                            <p class="stage-location">
+                                ${area}${district ? `, ${district}` : ""}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="stage-chairman">
+                        <span>STAGE CHAIRMAN</span>
+                        <strong>${chairman}</strong>
+                    </div>
+
                 </div>
-                <span class="status-badge active">Active</span>
-            </div>
 
-            <div class="stage-info">
-                <p><strong>Chairman:</strong> ${escapeHTML(stage.chairmanName)}</p>
-                <p><strong>Phone:</strong> ${formatPhone(stage.chairmanPhone)}</p>
+
+                <!-- RIGHT SIDE -->
+                <div class="stage-right">
+
+                    <div class="stage-phone">
+                        <span>PHONE NUMBER</span>
+                        <strong>
+                            ${escapeHTML(phone)}
+                        </strong>
+                    </div>
+
+                    ${
+                        callPhone
+                            ? `
+                            <a
+                                href="tel:${callPhone}"
+                                class="stage-call-button"
+                                onclick="event.stopPropagation()"
+                            >
+                                <span>☎</span>
+                                Call
+                            </a>
+                            `
+                            : `
+                            <button
+                                class="stage-call-button disabled"
+                                disabled
+                            >
+                                No Phone
+                            </button>
+                            `
+                    }
+
+                </div>
+
             </div>
-        </div>
-    `).join("");
+        `;
+    }).join("");
 }
-
 const stageSearch = $("stageSearch");
 
 stageSearch?.addEventListener("input", () => {
@@ -630,6 +712,660 @@ stageSearch?.addEventListener("input", () => {
 });
 
 if ($("stageList") || $("stageSelect")) loadStages();
+
+
+// ================= DASHBOARD =================
+
+const dashboardName = $("marketeerName");
+
+if (dashboardName) {
+
+    onAuthStateChanged(auth, async user => {
+
+        if (!user) {
+            window.location.href = "index.html";
+            return;
+        }
+
+        try {
+
+            // ================= GREETING =================
+
+            const hour = new Date().getHours();
+
+            let greeting = "Good morning,";
+
+            if (hour >= 12 && hour < 17) {
+                greeting = "Good afternoon,";
+            }
+
+            if (hour >= 17) {
+                greeting = "Good evening,";
+            }
+
+            if ($("dashboardGreeting")) {
+                $("dashboardGreeting").textContent =
+                    greeting;
+            }
+
+
+            // ================= MARKETER INFORMATION =================
+
+            const marketerSnapshot =
+                await get(
+                    ref(
+                        database,
+                        `bodaProgram/marketers/${user.uid}`
+                    )
+                );
+
+            const marketer =
+                marketerSnapshot.exists()
+                    ? marketerSnapshot.val()
+                    : {};
+
+            const fullName =
+                marketer.fullName ||
+                user.displayName ||
+                user.email?.split("@")[0] ||
+                "Marketeer";
+
+            const firstName =
+                fullName
+                    .trim()
+                    .split(/\s+/)[0];
+
+            dashboardName.textContent =
+                firstName;
+
+
+            // ================= PROFILE PHOTO =================
+
+            const profilePhoto =
+                $("dashboardProfilePhoto");
+
+            const profileInitials =
+                $("dashboardProfileInitials");
+
+            const avatar =
+                $("dashboardProfileAvatar");
+
+            let googlePhoto = user.photoURL || "";
+
+            // Check Google provider information too
+            if (!googlePhoto && user.providerData) {
+
+                const googleProvider =
+                    user.providerData.find(
+                        provider =>
+                            provider.providerId === "google.com"
+                    );
+
+                if (googleProvider?.photoURL) {
+                    googlePhoto =
+                        googleProvider.photoURL;
+                }
+            }
+
+
+            // Google profile photo available
+            if (googlePhoto && profilePhoto) {
+
+                profilePhoto.src =
+                    googlePhoto;
+
+                profilePhoto.onload = () => {
+
+                    profilePhoto
+                        .classList
+                        .remove("hidden");
+
+                    profileInitials
+                        ?.classList
+                        .add("hidden");
+                };
+
+                // Fall back to initials if Google image fails
+                profilePhoto.onerror = () => {
+
+                    profilePhoto
+                        .classList
+                        .add("hidden");
+
+                    profileInitials
+                        ?.classList
+                        .remove("hidden");
+                };
+
+            } else {
+
+                // ================= INITIALS FALLBACK =================
+
+                const names =
+                    fullName
+                        .trim()
+                        .split(/\s+/)
+                        .filter(Boolean);
+
+                let initials =
+                    names[0]?.charAt(0) || "M";
+
+                if (names.length > 1) {
+
+                    initials +=
+                        names[
+                            names.length - 1
+                        ]?.charAt(0) || "";
+                }
+
+                if (profileInitials) {
+
+                    profileInitials.textContent =
+                        initials.toUpperCase();
+
+                    profileInitials
+                        .classList
+                        .remove("hidden");
+                }
+            }
+
+
+            // ================= LOAD DASHBOARD DATA =================
+
+            loadDashboardRegistrations(
+                user.uid
+            );
+
+            loadDashboardEarnings(
+                user.uid
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Dashboard initialization error:",
+                error
+            );
+
+            showToast(
+                "Unable to load dashboard.",
+                "error"
+            );
+        }
+    });
+}
+
+
+// ================= DASHBOARD REGISTRATIONS =================
+
+async function loadDashboardRegistrations(marketerId) {
+    const container = $("recentRegistrations");
+
+    if (!container) {
+        console.error("recentRegistrations container not found.");
+        return;
+    }
+
+    try {
+        container.innerHTML = `
+            <div class="dashboard-recent-loading">
+                <div class="dashboard-small-spinner"></div>
+                <div>
+                    <strong>Loading registrations...</strong>
+                    <span>Please wait</span>
+                </div>
+            </div>
+        `;
+
+        console.log("Loading dashboard for marketer:", marketerId);
+
+        // Get BOTH registration types
+        const [ridersSnapshot, pregnantSnapshot] =
+            await Promise.all([
+                get(ref(database, "bodaProgram/riders")),
+                get(ref(database, "bodaProgram/pregnantWomen"))
+            ]);
+
+        const registrations = [];
+
+        // ================= RIDERS =================
+
+        if (ridersSnapshot.exists()) {
+            ridersSnapshot.forEach(childSnapshot => {
+                const rider = childSnapshot.val() || {};
+
+                console.log(
+                    "Dashboard rider:",
+                    childSnapshot.key,
+                    rider
+                );
+
+                if (
+                    !rider.marketerId ||
+                    rider.marketerId === marketerId
+                ) {
+                    registrations.push({
+                        ...rider,
+                        id: childSnapshot.key,
+                        registrationType: "rider"
+                    });
+                }
+            });
+        }
+
+        // ================= PREGNANT WOMEN =================
+
+        if (pregnantSnapshot.exists()) {
+            pregnantSnapshot.forEach(childSnapshot => {
+                const woman = childSnapshot.val() || {};
+
+                console.log(
+                    "Dashboard pregnant woman:",
+                    childSnapshot.key,
+                    woman
+                );
+
+                if (
+                    !woman.marketerId ||
+                    woman.marketerId === marketerId
+                ) {
+                    registrations.push({
+                        ...woman,
+                        id: childSnapshot.key,
+                        registrationType: "pregnant"
+                    });
+                }
+            });
+        }
+
+        // Newest first
+        registrations.sort((a, b) =>
+            Number(b.registeredAt || 0) -
+            Number(a.registeredAt || 0)
+        );
+
+        console.log(
+            "FINAL DASHBOARD REGISTRATIONS:",
+            registrations
+        );
+
+        // ================= TOTAL =================
+
+        if ($("totalRegistrations")) {
+            $("totalRegistrations").textContent =
+                registrations.length;
+        }
+
+        // ================= THIS MONTH =================
+
+        const now = new Date();
+
+        const thisMonth = registrations.filter(item => {
+            if (!item.registeredAt) return false;
+
+            const date = new Date(
+                Number(item.registeredAt)
+            );
+
+            return (
+                date.getMonth() === now.getMonth() &&
+                date.getFullYear() === now.getFullYear()
+            );
+        }).length;
+
+        if ($("monthlyRegistrationChange")) {
+            $("monthlyRegistrationChange").textContent =
+                `${thisMonth} this month`;
+        }
+
+        // ================= RECENT 5 =================
+
+        displayDashboardRecentRegistrations(
+            registrations.slice(0, 5)
+        );
+
+    } catch (error) {
+        console.error(
+            "DASHBOARD REGISTRATION ERROR:",
+            error
+        );
+
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">⚠️</div>
+                <h3>Unable to load registrations</h3>
+                <p>Please refresh and try again.</p>
+            </div>
+        `;
+
+        showToast(
+            "Failed to load recent registrations.",
+            "error"
+        );
+    }
+}
+
+
+// ================= DISPLAY RECENT REGISTRATIONS =================
+
+function displayDashboardRecentRegistrations(
+    registrations
+) {
+
+    const container =
+        $("recentRegistrations");
+
+    if (!container) {
+        return;
+    }
+
+
+    // ================= EMPTY =================
+
+    if (!registrations.length) {
+
+        container.innerHTML = `
+            <div class="empty-state dashboard-empty">
+                <div class="empty-icon">👥</div>
+                <h3>No registrations yet</h3>
+                <p>
+                    Your latest registrations
+                    will appear here.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+
+    // ================= CARDS =================
+
+    container.innerHTML =
+        registrations
+            .map(client => {
+
+                const isRider =
+                    client.registrationType ===
+                    "rider";
+
+
+                const typeText =
+                    isRider
+                        ? "Boda Boda Rider"
+                        : "Pregnant Woman";
+
+
+                let statusText =
+                    "Pending";
+
+                let statusClass =
+                    "pending";
+
+
+                // ================= RIDER STATUS =================
+
+                if (isRider) {
+
+                    if (
+                        client.otpVerified === true
+                    ) {
+
+                        statusText =
+                            "Verified";
+
+                        statusClass =
+                            "verified";
+                    }
+
+                }
+
+
+                // ================= PREGNANT STATUS =================
+
+                else {
+
+                    if (
+                        client.approved === true
+                    ) {
+
+                        statusText =
+                            "Approved";
+
+                        statusClass =
+                            "verified";
+
+                    } else if (
+                        client.paymentConfirmed ===
+                        true
+                    ) {
+
+                        statusText =
+                            "Payment Confirmed";
+
+                    } else if (
+                        client.arrived === true
+                    ) {
+
+                        statusText =
+                            "Arrived";
+
+                    } else {
+
+                        statusText =
+                            "Awaiting Visit";
+                    }
+                }
+
+
+                const initials =
+                    getClientInitials(
+                        client.fullName || ""
+                    );
+
+
+                const stage =
+                    isRider &&
+                    client.stageName
+
+                        ? `
+                            <span class="dashboard-recent-stage">
+                                📍
+                                ${escapeHTML(
+                                    client.stageName
+                                )}
+                            </span>
+                        `
+
+                        : "";
+
+
+                return `
+                    <div
+                        class="dashboard-recent-card"
+                        data-id="${escapeHTML(
+                            client.id || ""
+                        )}"
+                        data-type="${escapeHTML(
+                            client.registrationType
+                        )}"
+                    >
+
+                        <div class="
+                            dashboard-recent-avatar
+                            ${
+                                isRider
+                                    ? "rider"
+                                    : "pregnant"
+                            }
+                        ">
+                            ${escapeHTML(
+                                initials
+                            )}
+                        </div>
+
+
+                        <div class="
+                            dashboard-recent-info
+                        ">
+
+                            <strong>
+                                ${escapeHTML(
+                                    client.fullName ||
+                                    "Unknown"
+                                )}
+                            </strong>
+
+
+                            <span class="
+                                dashboard-recent-type
+                            ">
+                                ${typeText}
+                            </span>
+
+
+                            <span class="
+                                dashboard-recent-phone
+                            ">
+                                ${escapeHTML(
+                                    formatPhone(
+                                        client.phone ||
+                                        ""
+                                    )
+                                )}
+                            </span>
+
+
+                            ${stage}
+
+
+                            <small>
+                                ${formatDate(
+                                    client.registeredAt
+                                )}
+                            </small>
+
+                        </div>
+
+
+                        <div class="
+                            dashboard-recent-right
+                        ">
+
+                            <span class="
+                                dashboard-status
+                                ${statusClass}
+                            ">
+                                ${statusText}
+                            </span>
+
+                            <span class="
+                                dashboard-recent-arrow
+                            ">
+                                ›
+                            </span>
+
+                        </div>
+
+                    </div>
+                `;
+            })
+            .join("");
+
+
+    // ================= CLICK REGISTRATION =================
+
+    container
+        .querySelectorAll(
+            ".dashboard-recent-card"
+        )
+        .forEach(card => {
+
+            card.addEventListener(
+                "click",
+                () => {
+
+                    sessionStorage.setItem(
+                        "selectedRegistrationId",
+                        card.dataset.id
+                    );
+
+                    sessionStorage.setItem(
+                        "selectedRegistrationType",
+                        card.dataset.type
+                    );
+
+                    window.location.href =
+                        "client-details.html";
+                }
+            );
+        });
+}
+
+
+// ================= DASHBOARD EARNINGS =================
+
+function loadDashboardEarnings(marketerId) {
+
+    const commissionsRef =
+        ref(
+            database,
+            "bodaProgram/commissions"
+        );
+
+
+    onValue(
+
+        commissionsRef,
+
+        snapshot => {
+
+            let total = 0;
+
+
+            snapshot.forEach(
+                childSnapshot => {
+
+                    const commission =
+                        childSnapshot.val() || {};
+
+
+                    if (
+                        commission.marketerId ===
+                        marketerId
+                    ) {
+
+                        total +=
+                            Number(
+                                commission.amount || 0
+                            );
+                    }
+                }
+            );
+
+
+            if ($("totalEarnings")) {
+
+                $("totalEarnings")
+                    .textContent =
+                    formatMoney(total);
+            }
+        },
+
+        error => {
+
+            console.error(
+                "Dashboard earnings error:",
+                error
+            );
+        }
+    );
+}
+
+
+
+
+
 
 
 

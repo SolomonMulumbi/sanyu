@@ -3362,3 +3362,890 @@ body:not(.auth-page) {
 #recaptcha-container > div {
     margin: 0 auto;
 }
+
+
+
+
+
+
+
+/* =========================================================
+   GLOBAL LOADING SCREEN
+========================================================= */
+
+.loader-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.96);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.loader-overlay.hidden {
+    display: none !important;
+}
+
+.loader-overlay .loader {
+    width: 44px;
+    height: 44px;
+    border: 4px solid #e7eee9;
+    border-top-color: #16794a;
+    border-radius: 50%;
+    animation: globalLoaderSpin 0.75s linear infinite;
+}
+
+.loader-overlay p {
+    margin: 16px 0 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #26352d;
+    letter-spacing: 0.1px;
+}
+
+@keyframes globalLoaderSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   RECENT REGISTRATIONS SECTION
+========================================================= */
+
+#recentRegistrations {
+    width: 100%;
+    margin-top: 5px;
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   RECENT REGISTRATION CARD
+========================================================= */
+
+.dashboard-recent-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 12px;
+    padding: 15px 10px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #edf1ef;
+    background: #fff;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease;
+}
+
+.dashboard-recent-card:last-child {
+    border-bottom: none;
+}
+
+.dashboard-recent-card:hover {
+    background: #f8fbf9;
+}
+
+.dashboard-recent-card:active {
+    transform: scale(0.985);
+}
+
+
+/* =========================================================
+   CLIENT AVATAR
+========================================================= */
+
+.dashboard-recent-avatar {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #eaf7f0;
+
+    color: #147647;
+    font-size: 14px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+}
+
+.dashboard-recent-avatar.pregnant {
+    background: #fff0f5;
+    color: #b9476c;
+}
+
+.dashboard-recent-avatar.rider {
+    background: #eaf7f0;
+    color: #147647;
+}
+
+
+/* =========================================================
+   CLIENT INFORMATION
+========================================================= */
+
+.dashboard-recent-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.dashboard-recent-info strong {
+    display: block;
+
+    color: #18251f;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    line-height: 1.3;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dashboard-recent-type {
+    display: inline-block;
+
+    margin-top: 3px;
+
+    color: #66756d;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.dashboard-recent-phone {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #53645b;
+
+    font-size: 12px;
+}
+
+.dashboard-recent-stage {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #6d7a73;
+
+    font-size: 11px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dashboard-recent-info small {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #9aa59f;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   RIGHT SIDE
+========================================================= */
+
+.dashboard-recent-right {
+    min-width: 78px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-end;
+    justify-content: center;
+
+    gap: 8px;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.dashboard-status {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    background: #fff6df;
+
+    color: #9a6a00;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+.dashboard-status.verified {
+    background: #e9f8ef;
+    color: #16794a;
+}
+
+.dashboard-status.pending {
+    background: #fff5dc;
+    color: #9b6900;
+}
+
+
+/* =========================================================
+   ARROW
+========================================================= */
+
+.dashboard-recent-arrow {
+    color: #a4aea9;
+
+    font-size: 23px;
+    font-weight: 400;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   DASHBOARD LOADING
+========================================================= */
+
+.dashboard-recent-loading {
+    width: 100%;
+    min-height: 120px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 13px;
+
+    padding: 25px;
+
+    box-sizing: border-box;
+
+    background: #fff;
+}
+
+.dashboard-recent-loading > div:last-child {
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-recent-loading strong {
+    color: #26352d;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.dashboard-recent-loading span {
+    margin-top: 3px;
+
+    color: #89958e;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   DASHBOARD SMALL SPINNER
+========================================================= */
+
+.dashboard-small-spinner {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+
+    border: 3px solid #e5ede8;
+    border-top-color: #16794a;
+
+    border-radius: 50%;
+
+    animation: dashboardLoaderSpin 0.75s linear infinite;
+}
+
+@keyframes dashboardLoaderSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   EMPTY RECENT REGISTRATIONS
+========================================================= */
+
+#recentRegistrations .empty-state {
+    min-height: 130px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+
+    box-sizing: border-box;
+
+    text-align: center;
+}
+
+#recentRegistrations .empty-icon {
+    font-size: 28px;
+
+    margin-bottom: 8px;
+}
+
+#recentRegistrations .empty-state h3 {
+    margin: 0;
+
+    color: #25342c;
+
+    font-size: 14px;
+}
+
+#recentRegistrations .empty-state p {
+    margin: 5px 0 0;
+
+    color: #89958e;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   GOOGLE PROFILE PICTURE
+========================================================= */
+
+.dashboard-profile-link {
+    display: block;
+
+    text-decoration: none;
+}
+
+.dashboard-profile-avatar {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background: #e9f5ee;
+
+    border: 2px solid rgba(255,255,255,0.9);
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+
+    color: #16794a;
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.dashboard-profile-avatar img {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+}
+
+.dashboard-profile-avatar .hidden {
+    display: none !important;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .dashboard-recent-card {
+        padding: 14px 5px;
+
+        gap: 10px;
+    }
+
+    .dashboard-recent-avatar {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+
+        border-radius: 13px;
+
+        font-size: 13px;
+    }
+
+    .dashboard-recent-info strong {
+        font-size: 13px;
+    }
+
+    .dashboard-recent-phone {
+        font-size: 11px;
+    }
+
+    .dashboard-recent-right {
+        min-width: 65px;
+    }
+
+    .dashboard-status {
+        padding: 4px 7px;
+
+        font-size: 8px;
+    }
+}
+
+
+/* =========================================================
+   STAGES LIST
+========================================================= */
+
+#stageList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+
+/* =========================================================
+   STAGE CARD - LEFT / RIGHT
+========================================================= */
+
+.stage-card {
+    width: 100%;
+    box-sizing: border-box;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 145px;
+
+    gap: 16px;
+
+    padding: 16px;
+
+    background: #ffffff;
+
+    border: 1px solid #e8eeea;
+    border-radius: 16px;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================================================
+   LEFT SIDE
+========================================================= */
+
+.stage-left {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: space-between;
+}
+
+
+/* TOP */
+
+.stage-title-row {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+}
+
+
+/* LOCATION ICON */
+
+.stage-location-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #edf8f2;
+
+    font-size: 19px;
+}
+
+
+/* TITLE */
+
+.stage-title-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.stage-name-line {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    min-width: 0;
+}
+
+.stage-name-line h3 {
+    margin: 0;
+
+    color: #17251e;
+
+    font-size: 14px;
+    font-weight: 750;
+
+    line-height: 1.3;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* ACTIVE */
+
+.stage-active-badge {
+    flex-shrink: 0;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 4px;
+
+    padding: 4px 7px;
+
+    background: #eaf8ef;
+
+    border-radius: 20px;
+
+    color: #16794a;
+
+    font-size: 8px;
+    font-weight: 750;
+}
+
+.stage-active-badge i {
+    width: 5px;
+    height: 5px;
+
+    display: block;
+
+    background: #1ba35e;
+
+    border-radius: 50%;
+}
+
+
+/* LOCATION */
+
+.stage-location {
+    margin: 4px 0 0;
+
+    color: #7d8a83;
+
+    font-size: 10px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   CHAIRMAN
+========================================================= */
+
+.stage-chairman {
+    margin-top: 15px;
+    padding-left: 55px;
+}
+
+.stage-chairman span,
+.stage-phone span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #9aa49f;
+
+    font-size: 8px;
+    font-weight: 750;
+
+    letter-spacing: 0.5px;
+}
+
+.stage-chairman strong {
+    display: block;
+
+    color: #26352d;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   RIGHT SIDE
+========================================================= */
+
+.stage-right {
+    min-width: 0;
+
+    padding-left: 16px;
+
+    border-left: 1px solid #edf0ee;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: flex-start;
+
+    gap: 12px;
+}
+
+
+/* PHONE */
+
+.stage-phone {
+    width: 100%;
+}
+
+.stage-phone strong {
+    display: block;
+
+    color: #1e2d25;
+
+    font-size: 12px;
+    font-weight: 750;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   CALL BUTTON
+========================================================= */
+
+.stage-call-button {
+    width: 100%;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    box-sizing: border-box;
+
+    background: #16794a;
+
+    border: none;
+    border-radius: 9px;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.stage-call-button:active {
+    transform: scale(0.97);
+}
+
+.stage-call-button.disabled {
+    background: #e8ecea;
+    color: #8c9691;
+    cursor: default;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.stage-empty {
+    min-height: 250px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px 20px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #e8eeea;
+    border-radius: 16px;
+
+    text-align: center;
+}
+
+.stage-empty-icon {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 12px;
+
+    background: #edf8f2;
+
+    border-radius: 50%;
+
+    font-size: 25px;
+}
+
+.stage-empty h3 {
+    margin: 0;
+
+    color: #26352d;
+
+    font-size: 15px;
+}
+
+.stage-empty p {
+    margin: 6px 0 17px;
+
+    color: #818d86;
+
+    font-size: 11px;
+}
+
+.stage-empty-button {
+    padding: 11px 17px;
+
+    background: #16794a;
+
+    border-radius: 10px;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .stage-card {
+        grid-template-columns: minmax(0, 1fr) 112px;
+
+        gap: 10px;
+
+        padding: 13px;
+    }
+
+    .stage-location-icon {
+        width: 39px;
+        height: 39px;
+        min-width: 39px;
+
+        font-size: 16px;
+    }
+
+    .stage-name-line h3 {
+        font-size: 12px;
+    }
+
+    .stage-active-badge {
+        padding: 3px 5px;
+
+        font-size: 7px;
+    }
+
+    .stage-chairman {
+        padding-left: 50px;
+        margin-top: 12px;
+    }
+
+    .stage-right {
+        padding-left: 10px;
+    }
+
+    .stage-phone strong {
+        font-size: 10px;
+    }
+
+    .stage-call-button {
+        height: 34px;
+
+        font-size: 9px;
+    }
+}
