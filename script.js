@@ -840,50 +840,43 @@ if (otpForm) {
 
     // ================= RECAPTCHA =================
 
-    async function setupPhoneVerification() {
-        try {
-            recaptchaVerifier = new RecaptchaVerifier(
-                phoneAuth,
-                "recaptcha-container",
-                {
-                    size: "normal",
+  async function setupPhoneVerification() {
+    try {
+        recaptchaVerifier = new RecaptchaVerifier(
+            "recaptcha-container",
+            {
+                size: "normal",
 
-                    callback: () => {
-                        console.log(
-                            "reCAPTCHA completed"
-                        );
-                    },
+                callback: () => {
+                    console.log("reCAPTCHA completed");
+                },
 
-                    "expired-callback": () => {
-                        confirmationResult = null;
+                "expired-callback": () => {
+                    confirmationResult = null;
 
-                        showToast(
-                            "reCAPTCHA expired. Complete it again.",
-                            "error"
-                        );
-                    }
+                    showToast(
+                        "reCAPTCHA expired. Complete it again.",
+                        "error"
+                    );
                 }
-            );
+            },
+            phoneAuth
+        );
 
-            recaptchaWidgetId =
-                await recaptchaVerifier.render();
+        recaptchaWidgetId =
+            await recaptchaVerifier.render();
 
-            console.log(
-                "Firebase reCAPTCHA ready"
-            );
+        console.log("Firebase reCAPTCHA ready");
 
-        } catch (error) {
-            console.error(
-                "reCAPTCHA error:",
-                error
-            );
+    } catch (error) {
+        console.error("reCAPTCHA error:", error);
 
-            showToast(
-                "Unable to prepare phone verification.",
-                "error"
-            );
-        }
+        showToast(
+            "Unable to prepare phone verification.",
+            "error"
+        );
     }
+}
 
 
     // ================= SEND OTP =================
