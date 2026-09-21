@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Earnings</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header class="page-header">
+  <a href="dashboard.html">←</a>
+  <h1>My Earnings</h1>
+</header>
+
+<main class="app-content">
+
+  <section class="earnings-total">
+
+    <span>Total Earnings</span>
+
+    <h1>
+      UGX <span id="earningsTotal">0</span>
+    </h1>
+
+    <p>
+      UGX 1,000 per verified rider
+    </p>
+
+  </section>
+
+  <section class="stats-grid">
+
+    <article class="stat-card">
+      <span>This Month</span>
+      <strong id="monthEarnings">UGX 0</strong>
+      <small>
+        <span id="monthRiders">0</span> riders
+      </small>
+    </article>
+
+    <article class="stat-card">
+      <span>Pending Payment</span>
+      <strong id="pendingEarnings">UGX 0</strong>
+    </article>
+
+  </section>
+
+  <section class="section">
+
+    <div class="section-header">
+      <h2>Payout History</h2>
+    </div>
+
+    <div id="payoutHistory">
+
+      <div class="empty-state">
+        No payouts yet.
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<nav class="bottom-nav">
+  <a href="dashboard.html">Home</a>
+  <a href="register-rider.html">Register</a>
+  <a href="riders.html">Riders</a>
+  <a href="stages.html">Stages</a>
+  <a href="profile.html">Profile</a>
+</nav>
+
+<script src="script.js" type="module"></script>
+</body>
+</html>

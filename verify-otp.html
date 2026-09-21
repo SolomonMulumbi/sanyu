@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Registration | Bibo Medical System</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header class="page-header">
+  <a href="register-rider.html" class="back-btn">←</a>
+  <h1>Verify Registration</h1>
+</header>
+
+<main class="otp-container">
+
+  <div class="otp-icon">📱</div>
+
+  <span class="registration-label">PHONE VERIFICATION</span>
+
+  <h1>Enter Verification Code</h1>
+
+  <p id="otpDescription">
+    Enter the 6-digit verification code sent to
+  </p>
+
+  <strong id="otpPhoneNumber">07XX XXX XXX</strong>
+
+  <div class="otp-registration-info">
+    <span id="otpRegistrationType">Registration</span>
+    <strong id="otpRegistrationName"></strong>
+  </div>
+<div id="recaptcha-container"></div>
+
+<button
+    type="button"
+    id="sendOtpBtn"
+    class="primary-btn">
+
+    Send Verification Code
+
+</button>
+
+
+  <form id="otpForm">
+
+    <div class="otp-inputs">
+
+      <input type="text" maxlength="1" inputmode="numeric" autocomplete="one-time-code" class="otp-digit">
+      <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
+      <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
+      <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
+      <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
+      <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
+
+    </div>
+
+    <div id="otpMessage"></div>
+
+    <p class="resend-text">
+      Didn't receive the code?
+      <button type="button" id="resendOtpBtn">Resend code</button>
+    </p>
+
+    <button type="submit" id="verifyOtpBtn" class="primary-btn">
+      Verify & Continue
+    </button>
+
+  </form>
+
+</main>
+
+<script src="js/script.js" type="module"></script>
+
+</body>
+</html>

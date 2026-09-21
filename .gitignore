@@ -1,0 +1,17 @@
+# Node dependencies
+node_modules/
+functions/node_modules/
+
+# Firebase temporary/debug files
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+
+# Environment/secrets
+.env
+.env.*
+
+# Editor/Windows files
+.vscode/
+.DS_Store
+Thumbs.db

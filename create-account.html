@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Marketeer Account</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header class="page-header">
+  <a href="index.html">←</a>
+  <h1>Create Account</h1>
+</header>
+
+<main class="app-content">
+
+<form id="marketeerRegistrationForm">
+
+  <div class="form-group">
+    <label for="marketeerFullName">
+      Full Name *
+    </label>
+
+    <input
+      type="text"
+      id="marketeerFullName"
+      required
+    >
+  </div>
+
+  <div class="form-group">
+    <label for="marketeerPhone">
+      Phone Number *
+    </label>
+
+    <input
+      type="tel"
+      id="marketeerPhone"
+      required
+    >
+  </div>
+
+  <div class="form-group">
+    <label for="marketeerEmail">
+      Email
+    </label>
+
+    <input
+      type="email"
+      id="marketeerEmail"
+    >
+  </div>
+
+  <div class="form-group">
+    <label for="marketeerPassword">
+      Password *
+    </label>
+
+    <input
+      type="password"
+      id="marketeerPassword"
+      required
+    >
+  </div>
+
+  <div class="form-group">
+    <label for="confirmPassword">
+      Confirm Password *
+    </label>
+
+    <input
+      type="password"
+      id="confirmPassword"
+      required
+    >
+  </div>
+
+  <button
+    type="submit"
+    id="createMarketeerBtn"
+    class="primary-btn">
+    Create Account
+  </button>
+
+</form>
+
+</main>
+
+<script src="script.js" type="module"></script>
+</body>
+</html>
