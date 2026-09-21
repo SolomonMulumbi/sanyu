@@ -842,18 +842,20 @@ if (otpForm) {
 
   async function setupPhoneVerification() {
     try {
+        if (recaptchaVerifier) {
+            recaptchaVerifier.clear();
+            recaptchaVerifier = null;
+        }
+
         recaptchaVerifier = new RecaptchaVerifier(
             "recaptcha-container",
             {
                 size: "normal",
-
                 callback: () => {
                     console.log("reCAPTCHA completed");
                 },
-
                 "expired-callback": () => {
                     confirmationResult = null;
-
                     showToast(
                         "reCAPTCHA expired. Complete it again.",
                         "error"
@@ -863,8 +865,7 @@ if (otpForm) {
             phoneAuth
         );
 
-        recaptchaWidgetId =
-            await recaptchaVerifier.render();
+        recaptchaWidgetId = await recaptchaVerifier.render();
 
         console.log("Firebase reCAPTCHA ready");
 
@@ -877,7 +878,6 @@ if (otpForm) {
         );
     }
 }
-
 
     // ================= SEND OTP =================
 
