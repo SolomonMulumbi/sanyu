@@ -1466,7 +1466,7 @@ $("notificationsBtn")?.addEventListener("click", () => {
 
 $("aboutBtn")?.addEventListener("click", () => {
     alert(
-`Bibo Medical System
+`SANYU HOSPITAL
 
 Boda Boda Community Program
 

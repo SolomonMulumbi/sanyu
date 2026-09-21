@@ -1,5 +1,5 @@
 /* =========================================================
-   BIBO MEDICAL SYSTEM
+   SANYU HOSPITAL
    Boda Boda Rider Marketing Program
    Main Mobile Application Styles
    ========================================================= */
@@ -80,12 +80,23 @@ body {
         Arial,
         sans-serif;
 
-    background: var(--background);
+    background:
+        linear-gradient(
+            rgba(244, 247, 251, 0.91),
+            rgba(238, 244, 247, 0.95)
+        ),
+        url("../i.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
     color: var(--text);
     min-height: 100vh;
+
     -webkit-font-smoothing: antialiased;
 }
-
 a {
     text-decoration: none;
     color: inherit;
@@ -128,22 +139,24 @@ body:not(.auth-page) {
 /* =========================
    4. LOGIN / AUTH PAGE
    ========================= */
-
 .auth-page {
     min-height: 100vh;
 
     background:
         linear-gradient(
-            180deg,
-            rgba(2, 65, 99, 0.94),
-            rgba(3, 46, 70, 0.98)
-        );
+            135deg,
+            rgba(2, 45, 65, 0.45),
+            rgba(3, 46, 70, 0.68)
+        ),
+        url("../i.png") center center / cover no-repeat;
 
     display: flex;
     justify-content: center;
     align-items: center;
-}
 
+    padding: 20px;
+    box-sizing: border-box;
+}
 .auth-container {
     width: 100%;
     max-width: 480px;
@@ -1878,7 +1891,7 @@ body:not(.auth-page) {
 
 
 /* =========================================================
-   BIBO MEDICAL SYSTEM - PROFESSIONAL APP UI
+   SANYU HOSPITAL - PROFESSIONAL APP UI
    ========================================================= */
 
 :root {
@@ -4248,4 +4261,46 @@ body:not(.auth-page) {
 
         font-size: 9px;
     }
+}
+
+/* FINAL LOGIN BACKGROUND */
+
+body.auth-page {
+    min-height: 100vh !important;
+
+    background-image:
+        linear-gradient(
+            135deg,
+            rgba(2, 45, 65, 0.45),
+            rgba(3, 46, 70, 0.68)
+        ),
+        url("../i.png") !important;
+
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+body:not(.auth-page) {
+    max-width: 520px;
+    margin: 0 auto;
+
+    background:
+        linear-gradient(
+            rgba(244, 247, 251, 0.90),
+            rgba(238, 244, 247, 0.94)
+        ),
+        url("../i.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    position: relative;
+    min-height: 100vh;
 }
