@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -145,4 +146,152 @@
 
 <script src="script.js?v=8" type="module"></script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Registration | SANYU HOSPITAL</title>
+<link rel="stylesheet" href="css/style.css?v=21"></head>
+
+<body>
+
+<header class="page-header">
+  <a href="dashboard.html" class="back-btn">←</a>
+  <h1>New Registration</h1>
+</header>
+
+<main class="app-content">
+
+  <section class="registration-intro">
+    <span class="registration-label">COMMUNITY PROGRAM</span>
+    <h2>Who are you registering?</h2>
+    <p>Select a category to continue.</p>
+  </section>
+
+  <div class="registration-type-grid">
+
+    <button type="button" class="registration-type active" data-type="rider">
+      <div class="registration-type-icon">🏍️</div>
+      <div>
+        <strong>Boda Boda Rider</strong>
+        <span>Register a rider from a Boda Boda stage</span>
+      </div>
+      <span class="type-check">✓</span>
+    </button>
+
+    <button type="button" class="registration-type" data-type="pregnant">
+      <div class="registration-type-icon">♥</div>
+      <div>
+        <strong>Pregnant Woman</strong>
+        <span>Register for the maternal program</span>
+      </div>
+      <span class="type-check">✓</span>
+    </button>
+
+  </div>
+
+  <form id="communityRegistrationForm">
+
+    <input type="hidden" id="registrationType" value="rider">
+
+    <!-- BASIC INFORMATION -->
+
+    <section class="form-section">
+
+      <div class="form-section-heading">
+        <div>
+          <span class="section-step">01</span>
+          <h2>Personal Information</h2>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="clientName">Full Name *</label>
+        <input
+          type="text"
+          id="clientName"
+          placeholder="Enter full name"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="clientPhone">Phone Number *</label>
+        <input
+          type="tel"
+          id="clientPhone"
+          placeholder="07XX XXX XXX"
+          required>
+      </div>
+
+      <!-- ONLY SHOWN FOR RIDERS -->
+
+      <div id="riderExtraFields">
+
+        <div class="form-group">
+          <label for="clientNationalId">National ID / NIN</label>
+          <input
+            type="text"
+            id="clientNationalId"
+            placeholder="Optional">
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- RIDER STAGE -->
+
+    <div id="riderFields">
+
+      <section class="form-section">
+
+        <div class="form-section-heading">
+          <div>
+            <span class="section-step">02</span>
+            <h2>Boda Boda Stage</h2>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="stageSelect">Select Stage *</label>
+
+          <select id="stageSelect" required>
+            <option value="">Choose Stage</option>
+          </select>
+        </div>
+
+        <a href="add-stage.html" class="text-button">
+          + Register New Stage
+        </a>
+
+      </section>
+
+    </div>
+
+
+    <button
+      type="submit"
+      id="continueRegistrationBtn"
+      class="primary-btn">
+      Continue Registration
+    </button>
+
+  </form>
+
+</main>
+
+
+<nav class="bottom-nav">
+  <a href="dashboard.html">Home</a>
+  <a href="register-rider.html" class="active">Register</a>
+  <a href="riders.html">Clients</a>
+  <a href="stages.html">Stages</a>
+  <a href="profile.html">Profile</a>
+</nav>
+
+<script src="script.js?v=21" type="module"></script></body>
+>>>>>>> f4fa50e (Add login background)
 </html>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -110,4 +111,117 @@
 
 <script src="script.js?v=8" type="module"></script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Registrations | SANYU HOSPITAL</title>
+<link rel="stylesheet" href="css/style.css?v=21"></head>
+
+<body>
+
+<header class="page-header">
+  <a href="dashboard.html" class="back-btn">←</a>
+  <h1>My Registrations</h1>
+</header>
+
+<main class="app-content">
+
+  <!-- SUMMARY -->
+  <section class="registration-summary">
+    <div class="registration-summary-card">
+      <span class="summary-icon">👥</span>
+      <div>
+        <small>Total Registered</small>
+        <strong id="totalClients">0</strong>
+      </div>
+    </div>
+
+    <div class="registration-summary-card">
+      <span class="summary-icon">✓</span>
+      <div>
+        <small>Verified</small>
+        <strong id="verifiedClients">0</strong>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- CATEGORY FILTERS -->
+  <div class="client-tabs">
+    <button class="client-tab active" data-filter="all">
+      All
+    </button>
+
+    <button class="client-tab" data-filter="rider">
+      Riders
+    </button>
+
+    <button class="client-tab" data-filter="pregnant">
+      Pregnant Women
+    </button>
+
+    <button class="client-tab" data-filter="pending">
+      Pending
+    </button>
+  </div>
+
+
+  <!-- SEARCH -->
+  <div class="search-box">
+    <input
+      type="search"
+      id="clientSearch"
+      placeholder="Search name or phone number..."
+    >
+  </div>
+
+
+  <!-- REGISTRATION LIST -->
+  <section id="clientsList">
+
+    <div class="empty-state">
+      <div class="empty-icon">👥</div>
+      <h3>Loading registrations...</h3>
+      <p>Please wait while we prepare your records.</p>
+    </div>
+
+  </section>
+
+</main>
+
+
+<nav class="bottom-nav">
+
+  <a href="dashboard.html" class="nav-item">
+    <span>⌂</span>
+    <small>Home</small>
+  </a>
+
+  <a href="register-rider.html" class="nav-item">
+    <span>＋</span>
+    <small>Register</small>
+  </a>
+
+  <a href="riders.html" class="nav-item active">
+    <span>♙</span>
+    <small>Clients</small>
+  </a>
+
+  <a href="stages.html" class="nav-item">
+    <span>⌖</span>
+    <small>Stages</small>
+  </a>
+
+  <a href="profile.html" class="nav-item">
+    <span>●</span>
+    <small>Profile</small>
+  </a>
+
+</nav>
+
+<script src="script.js?v=21" type="module"></script></body>
+>>>>>>> f4fa50e (Add login background)
 </html>
