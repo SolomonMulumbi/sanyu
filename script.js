@@ -840,7 +840,16 @@ if (otpForm) {
 
     // ================= RECAPTCHA =================
 async function setupPhoneVerification() {
+    const loading = $("recaptchaLoading");
+    const container = $("recaptcha-container");
+
     try {
+        loading?.classList.remove("hidden");
+
+        if (container) {
+            container.style.visibility = "hidden";
+        }
+
         recaptchaVerifier = new RecaptchaVerifier(
             "recaptcha-container",
             {
@@ -854,7 +863,7 @@ async function setupPhoneVerification() {
                     confirmationResult = null;
 
                     showToast(
-                        "reCAPTCHA expired. Complete it again.",
+                        "Security check expired. Please complete it again.",
                         "error"
                     );
                 }
@@ -862,15 +871,32 @@ async function setupPhoneVerification() {
             phoneAuth
         );
 
-        recaptchaWidgetId = await recaptchaVerifier.render();
+        recaptchaWidgetId =
+            await recaptchaVerifier.render();
 
+        if (container) {
+            container.style.visibility = "visible";
+        }
+
+        loading?.classList.add("hidden");
+const sendButton = $("sendOtpBtn");
+
+if (sendButton) {
+    sendButton.disabled = false;
+}
         console.log("Firebase reCAPTCHA ready");
 
     } catch (error) {
         console.error("reCAPTCHA error:", error);
 
+        loading?.classList.add("hidden");
+
+        if (container) {
+            container.style.visibility = "visible";
+        }
+
         showToast(
-            "Unable to prepare phone verification.",
+            "Unable to load the security check. Please refresh and try again.",
             "error"
         );
     }

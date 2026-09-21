@@ -32,15 +32,23 @@
     <span id="otpRegistrationType">Registration</span>
     <strong id="otpRegistrationName"></strong>
   </div>
-<div id="recaptcha-container"></div>
+<div class="recaptcha-section">
+    <div id="recaptchaLoading" class="recaptcha-loading">
+        <div class="recaptcha-spinner"></div>
+        <div>
+            <strong>Preparing security check...</strong>
+            <span>Please wait a moment</span>
+        </div>
+    </div>
 
+    <div id="recaptcha-container" class="recaptcha-box"></div>
+</div>
 <button
     type="button"
     id="sendOtpBtn"
-    class="primary-btn">
-
+    class="primary-btn"
+    disabled>
     Send Verification Code
-
 </button>
 
 
