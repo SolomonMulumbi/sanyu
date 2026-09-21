@@ -1,0 +1,69 @@
+[debug] [2026-09-21T12:55:13.898Z] ----------------------------------------------------------------------
+[debug] [2026-09-21T12:55:13.902Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\DENTAL\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init functions
+[debug] [2026-09-21T12:55:13.902Z] CLI Version:   15.30.2
+[debug] [2026-09-21T12:55:13.903Z] Platform:      win32
+[debug] [2026-09-21T12:55:13.903Z] Node Version:  v24.21.0
+[debug] [2026-09-21T12:55:13.903Z] Detected Agent: unknown
+[debug] [2026-09-21T12:55:13.903Z] Time:          Mon Sep 21 2026 15:55:13 GMT+0300 (East Africa Time)
+[debug] [2026-09-21T12:55:13.903Z] ----------------------------------------------------------------------
+[debug] 
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  D:\sanyu marketeer
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] 
+[debug] [2026-09-21T12:57:00.994Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-09-21T12:57:00.994Z] > authorizing via signed-in user (biboofficial256@gmail.com)
+[debug] [2026-09-21T12:57:01.019Z] Checked if tokens are valid: true, expires at: 1789998709870
+[debug] [2026-09-21T12:57:01.019Z] Checked if tokens are valid: true, expires at: 1789998709870
+[debug] [2026-09-21T12:57:01.022Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2026-09-21T12:57:01.902Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2026-09-21T12:57:01.903Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] 
+=== Functions Setup
+[debug] [2026-09-21T12:57:04.577Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-09-21T12:57:04.578Z] > authorizing via signed-in user (biboofficial256@gmail.com)
+[debug] [2026-09-21T12:57:04.578Z] [iam] checking project abbah-83a7b for permissions ["firebase.projects.get"]
+[debug] [2026-09-21T12:57:04.579Z] Checked if tokens are valid: true, expires at: 1789998709870
+[debug] [2026-09-21T12:57:04.580Z] Checked if tokens are valid: true, expires at: 1789998709870
+[debug] [2026-09-21T12:57:04.580Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/abbah-83a7b:testIamPermissions [none]
+[debug] [2026-09-21T12:57:04.580Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/abbah-83a7b:testIamPermissions  x-goog-user-project=abbah-83a7b
+[debug] [2026-09-21T12:57:04.581Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/abbah-83a7b:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2026-09-21T12:57:06.793Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/abbah-83a7b:testIamPermissions 200
+[debug] [2026-09-21T12:57:06.794Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/abbah-83a7b:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2026-09-21T12:57:06.795Z] Checked if tokens are valid: true, expires at: 1789998709870
+[debug] [2026-09-21T12:57:06.795Z] Checked if tokens are valid: true, expires at: 1789998709870
+[debug] [2026-09-21T12:57:06.796Z] Checked if tokens are valid: true, expires at: 1789998709870
+[debug] [2026-09-21T12:57:06.796Z] Checked if tokens are valid: true, expires at: 1789998709870
+[debug] [2026-09-21T12:57:06.797Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/abbah-83a7b/services/cloudfunctions.googleapis.com [none]
+[debug] [2026-09-21T12:57:06.797Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/abbah-83a7b/services/cloudfunctions.googleapis.com  x-goog-user-project=abbah-83a7b
+[debug] [2026-09-21T12:57:06.800Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/abbah-83a7b/services/runtimeconfig.googleapis.com [none]
+[debug] [2026-09-21T12:57:06.800Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/abbah-83a7b/services/runtimeconfig.googleapis.com  x-goog-user-project=abbah-83a7b
+[debug] [2026-09-21T12:57:08.691Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/abbah-83a7b/services/runtimeconfig.googleapis.com 200
+[debug] [2026-09-21T12:57:08.692Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/abbah-83a7b/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2026-09-21T12:57:08.764Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/abbah-83a7b/services/cloudfunctions.googleapis.com 200
+[debug] [2026-09-21T12:57:08.765Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/abbah-83a7b/services/cloudfunctions.googleapis.com [omitted]
+[info] Let's create a new codebase for your functions.
+[info] A directory corresponding to the codebase will be created in your project
+[info] with sample code pre-configured.
+
+[info] See https://firebase.google.com/docs/functions/organize-functions for
+[info] more information on organizing your functions using codebases.
+
+[info] Functions can be deployed with firebase deploy.
+
+[info] +  Wrote functions/package.json 
+[info] +  Wrote functions/index.js 
+[info] +  Wrote functions/.gitignore 
