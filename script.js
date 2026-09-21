@@ -293,7 +293,6 @@ if (stageRegistrationForm) {
 
 
 
-
 // ================= COMMUNITY REGISTRATION =================
 
 const communityRegistrationForm = $("communityRegistrationForm");
@@ -333,50 +332,76 @@ if (communityRegistrationForm) {
             showLoader("Checking registration...");
 
             // Check whether this phone is already registered
-            const phoneIndexRef = ref(database, `bodaProgram/phoneIndex/${phone}`);
+            const phoneIndexRef = ref(
+                database,
+                `bodaProgram/phoneIndex/${phone}`
+            );
+
             const phoneSnapshot = await get(phoneIndexRef);
 
             if (phoneSnapshot.exists()) {
                 hideLoader();
-                showToast("This phone number is already registered.", "error");
+                showToast(
+                    "This phone number is already registered.",
+                    "error"
+                );
                 return;
             }
 
             // Get marketer information
             const marketerSnapshot = await get(
-                ref(database, `bodaProgram/marketers/${user.uid}`)
+                ref(
+                    database,
+                    `bodaProgram/marketers/${user.uid}`
+                )
             );
 
             const marketer = marketerSnapshot.exists()
                 ? marketerSnapshot.val()
                 : {};
 
-            const marketerName = marketer.fullName || user.email || "Marketer";
+            const marketerName =
+                marketer.fullName ||
+                user.email ||
+                "Marketer";
 
             // ================= RIDER =================
 
             if (type === "rider") {
                 const stageSelect = $("stageSelect");
-                const stageId = stageSelect.value;
+                const stageId = stageSelect?.value || "";
 
                 if (!stageId) {
                     hideLoader();
-                    showToast("Select the rider's Boda Boda stage.", "error");
+                    showToast(
+                        "Select the rider's Boda Boda stage.",
+                        "error"
+                    );
                     return;
                 }
 
                 const stageSnapshot = await get(
-                    ref(database, `bodaProgram/stages/${stageId}`)
+                    ref(
+                        database,
+                        `bodaProgram/stages/${stageId}`
+                    )
                 );
 
                 if (!stageSnapshot.exists()) {
                     hideLoader();
-                    showToast("Selected stage was not found.", "error");
+                    showToast(
+                        "Selected stage was not found.",
+                        "error"
+                    );
                     return;
                 }
 
                 const stage = stageSnapshot.val();
-                const riderRef = push(ref(database, "bodaProgram/riders"));
+
+                const riderRef = push(
+                    ref(database, "bodaProgram/riders")
+                );
+
                 const riderId = riderRef.key;
 
                 showLoader("Registering rider...");
@@ -402,65 +427,125 @@ if (communityRegistrationForm) {
                     type: "rider"
                 });
 
-                sessionStorage.setItem("pendingRegistrationId", riderId);
-                sessionStorage.setItem("pendingRegistrationType", "rider");
-                sessionStorage.setItem("pendingRegistrationPhone", phone);
-                sessionStorage.setItem("pendingRegistrationName", fullName);
+                // Store rider information for OTP page
+                sessionStorage.setItem(
+                    "pendingRegistrationId",
+                    riderId
+                );
+
+                sessionStorage.setItem(
+                    "pendingRegistrationType",
+                    "rider"
+                );
+
+                sessionStorage.setItem(
+                    "pendingRegistrationPhone",
+                    phone
+                );
+
+                sessionStorage.setItem(
+                    "pendingRegistrationName",
+                    fullName
+                );
             }
 
             // ================= PREGNANT WOMAN =================
 
             else {
                 const womanRef = push(
-                    ref(database, "bodaProgram/pregnantWomen")
+                    ref(
+                        database,
+                        "bodaProgram/pregnantWomen"
+                    )
                 );
 
                 const womanId = womanRef.key;
 
-                showLoader("Registering...");
+                showLoader(
+                    "Registering pregnant woman..."
+                );
 
-               await set(womanRef, {
-    registrationId: womanId,
-    fullName,
-    phone,
-    phoneNormalized: phone,
-    marketerId: user.uid,
-    marketerName,
-    arrived: false,
-    paymentConfirmed: false,
-    approved: false,
-    approvedAt: null,
-    approvedBy: null,
-    registeredAt: Date.now(),
-    status: "registered"
-});
+                await set(womanRef, {
+                    registrationId: womanId,
+                    fullName,
+                    phone,
+                    phoneNormalized: phone,
+                    marketerId: user.uid,
+                    marketerName,
+
+                    // Hospital/reception verification
+                    arrived: false,
+                    arrivedAt: null,
+
+                    paymentConfirmed: false,
+                    paymentConfirmedAt: null,
+
+                    approved: false,
+                    approvedAt: null,
+                    approvedBy: null,
+
+                    registeredAt: Date.now(),
+                    status: "registered"
+                });
 
                 await set(phoneIndexRef, {
                     registrationId: womanId,
                     type: "pregnant"
                 });
 
-                sessionStorage.setItem("pendingRegistrationId", womanId);
-                sessionStorage.setItem("pendingRegistrationType", "pregnant");
-                sessionStorage.setItem("pendingRegistrationPhone", phone);
-                sessionStorage.setItem("pendingRegistrationName", fullName);
+                // Used by success page
+                sessionStorage.setItem(
+                    "pendingRegistrationId",
+                    womanId
+                );
+
+                sessionStorage.setItem(
+                    "pendingRegistrationType",
+                    "pregnant"
+                );
+
+                sessionStorage.setItem(
+                    "pendingRegistrationPhone",
+                    phone
+                );
+
+                sessionStorage.setItem(
+                    "pendingRegistrationName",
+                    fullName
+                );
             }
 
             hideLoader();
-            showToast("Registration saved.", "success");
 
-           setTimeout(() => {
-    if (type === "rider") {
-        window.location.href = "verify-otp.html";
-    } else {
-        window.location.href = "registration-success.html";
-    }
-}, 600);
+            showToast(
+                "Registration saved.",
+                "success"
+            );
+
+            // Rider goes to OTP.
+            // Pregnant woman does NOT use OTP.
+            setTimeout(() => {
+                if (type === "rider") {
+                    window.location.href =
+                        "verify-otp.html";
+                } else {
+                    window.location.href =
+                        "registration-success.html";
+                }
+            }, 600);
 
         } catch (error) {
-            console.error("Registration error:", error);
+            console.error(
+                "Registration error:",
+                error
+            );
+
             hideLoader();
-            showToast("Failed to save registration.", "error");
+
+            showToast(
+                "Failed to save registration.",
+                "error"
+            );
         }
     });
 }
@@ -654,35 +739,51 @@ Connecting registered Boda Boda riders with approved hospital services and benef
 Version 1.0`
     );
 });
-
 // ================= REGISTRATION TYPE =================
 
-const registrationTypeButtons = document.querySelectorAll(".registration-type");
-const registrationType = $("registrationType");
-const riderFields = $("riderFields");
-const riderExtraFields = $("riderExtraFields");
+const registrationTypeButtons =
+    document.querySelectorAll(".registration-type");
+
+const registrationType =
+    $("registrationType");
+
+const riderFields =
+    $("riderFields");
+
+const riderExtraFields =
+    $("riderExtraFields");
 
 registrationTypeButtons.forEach(button => {
     button.addEventListener("click", () => {
         const type = button.dataset.type;
 
-        registrationTypeButtons.forEach(btn => btn.classList.remove("active"));
+        registrationTypeButtons.forEach(btn => {
+            btn.classList.remove("active");
+        });
+
         button.classList.add("active");
 
-        if (registrationType) registrationType.value = type;
+        if (registrationType) {
+            registrationType.value = type;
+        }
 
         if (type === "rider") {
             riderFields?.classList.remove("hidden");
             riderExtraFields?.classList.remove("hidden");
-            if ($("stageSelect")) $("stageSelect").required = true;
+
+            if ($("stageSelect")) {
+                $("stageSelect").required = true;
+            }
         } else {
             riderFields?.classList.add("hidden");
             riderExtraFields?.classList.add("hidden");
-            if ($("stageSelect")) $("stageSelect").required = false;
+
+            if ($("stageSelect")) {
+                $("stageSelect").required = false;
+            }
         }
     });
 });
-
 
 // ================= FIREBASE PHONE OTP =================
 
@@ -1619,25 +1720,37 @@ if (detailClientName) {
     });
 }
 
-
 function displayClientDetails(client, type) {
     const isRider = type === "rider";
-    const verified = client.otpVerified === true;
 
-    $("detailClientName").textContent = client.fullName || "Unknown";
-    $("detailClientPhone").textContent = formatPhone(client.phone || "");
-    $("detailMarketerName").textContent = client.marketerName || "Marketer";
-    $("detailRegistrationDate").textContent = formatDate(client.registeredAt);
+    const verified = isRider
+        ? client.otpVerified === true
+        : client.approved === true;
+
+    $("detailClientName").textContent =
+        client.fullName || "Unknown";
+
+    $("detailClientPhone").textContent =
+        formatPhone(client.phone || "");
+
+    $("detailMarketerName").textContent =
+        client.marketerName || "Marketer";
+
+    $("detailRegistrationDate").textContent =
+        formatDate(client.registeredAt);
 
     if ($("detailClientInitials")) {
         $("detailClientInitials").textContent =
-            getClientInitials(client.fullName || "");
+            getClientInitials(
+                client.fullName || ""
+            );
     }
 
     if ($("detailClientType")) {
-        $("detailClientType").textContent = isRider
-            ? "Boda Boda Rider"
-            : "Pregnant Woman";
+        $("detailClientType").textContent =
+            isRider
+                ? "Boda Boda Rider"
+                : "Pregnant Woman";
 
         $("detailClientType").classList.toggle(
             "pregnant",
@@ -1645,108 +1758,203 @@ function displayClientDetails(client, type) {
         );
     }
 
-    // Rider-only information
+    // Rider-specific information
     if (isRider) {
-        $("detailRiderSection")?.classList.remove("hidden");
+        $("detailRiderSection")
+            ?.classList.remove("hidden");
 
         if ($("detailClientNationalId")) {
             $("detailClientNationalId").textContent =
-                client.nationalId || "Not provided";
+                client.nationalId ||
+                "Not provided";
         }
 
         if ($("detailClientStage")) {
             $("detailClientStage").textContent =
-                client.stageName || "Not provided";
+                client.stageName ||
+                "Not provided";
         }
     } else {
-        $("detailRiderSection")?.classList.add("hidden");
+        $("detailRiderSection")
+            ?.classList.add("hidden");
     }
 
-    // Verification
-    const statusElement = $("detailClientStatus");
+    const statusElement =
+        $("detailClientStatus");
 
     if (statusElement) {
-        statusElement.textContent = verified
-            ? "Verified"
-            : "Pending";
+        let statusText = "Pending";
+        let statusClass = "pending";
 
-        statusElement.classList.remove("verified", "pending");
+        if (isRider) {
+            if (client.otpVerified === true) {
+                statusText = "Verified";
+                statusClass = "verified";
+            }
+        } else {
+            if (client.approved === true) {
+                statusText = "Approved";
+                statusClass = "verified";
+            } else if (client.paymentConfirmed === true) {
+                statusText = "Payment Confirmed";
+            } else if (client.arrived === true) {
+                statusText = "Arrived";
+            } else {
+                statusText = "Awaiting Hospital Visit";
+            }
+        }
+
+        statusElement.textContent =
+            statusText;
+
+        statusElement.classList.remove(
+            "verified",
+            "pending"
+        );
+
         statusElement.classList.add(
-            verified ? "verified" : "pending"
+            statusClass
         );
     }
 
     if ($("detailVerificationStatus")) {
-        $("detailVerificationStatus").textContent = verified
-            ? "Phone Verified"
-            : "Pending Verification";
+        if (isRider) {
+            $("detailVerificationStatus")
+                .textContent =
+                client.otpVerified === true
+                    ? "Phone Verified"
+                    : "Pending Phone Verification";
+        } else {
+            $("detailVerificationStatus")
+                .textContent =
+                client.approved === true
+                    ? "Hospital Approved"
+                    : "Awaiting Hospital Approval";
+        }
     }
 
-    if (verified) {
-        $("verificationAction")?.classList.add("hidden");
-    } else {
-        $("verificationAction")?.classList.remove("hidden");
+    // OTP button ONLY for riders
+    if ($("verificationAction")) {
+        if (
+            isRider &&
+            client.otpVerified !== true
+        ) {
+            $("verificationAction")
+                .classList.remove("hidden");
+        } else {
+            $("verificationAction")
+                .classList.add("hidden");
+        }
     }
 }
-
-
 // ================= VERIFY FROM DETAILS =================
 
-$("verifyClientPhoneBtn")?.addEventListener("click", async () => {
-    const registrationId = sessionStorage.getItem("selectedRegistrationId");
-    const registrationType = sessionStorage.getItem("selectedRegistrationType");
+$("verifyClientPhoneBtn")?.addEventListener(
+    "click",
+    async () => {
+        const registrationId =
+            sessionStorage.getItem(
+                "selectedRegistrationId"
+            );
 
-    if (!registrationId || !registrationType) {
-        showToast("Registration not found.", "error");
-        return;
-    }
+        const registrationType =
+            sessionStorage.getItem(
+                "selectedRegistrationType"
+            );
 
-    try {
-        const databasePath = registrationType === "rider"
-            ? `bodaProgram/riders/${registrationId}`
-            : `bodaProgram/pregnantWomen/${registrationId}`;
-
-        const snapshot = await get(ref(database, databasePath));
-
-        if (!snapshot.exists()) {
-            showToast("Registration not found.", "error");
+        if (!registrationId || !registrationType) {
+            showToast(
+                "Registration not found.",
+                "error"
+            );
             return;
         }
 
-        const client = snapshot.val();
+        // Only riders use phone OTP
+        if (registrationType !== "rider") {
+            showToast(
+                "Phone verification is only required for Boda Boda riders.",
+                "info"
+            );
+            return;
+        }
 
-        sessionStorage.setItem(
-            "pendingRegistrationId",
-            registrationId
-        );
+        try {
+            showLoader(
+                "Preparing phone verification..."
+            );
 
-        sessionStorage.setItem(
-            "pendingRegistrationType",
-            registrationType
-        );
+            const databasePath =
+                `bodaProgram/riders/${registrationId}`;
 
-        sessionStorage.setItem(
-            "pendingRegistrationPhone",
-            client.phone || ""
-        );
+            const snapshot = await get(
+                ref(database, databasePath)
+            );
 
-        sessionStorage.setItem(
-            "pendingRegistrationName",
-            client.fullName || ""
-        );
+            if (!snapshot.exists()) {
+                hideLoader();
 
-setTimeout(() => {
-    if (type === "rider") {
-        window.location.href = "verify-otp.html";
-    } else {
-        window.location.href = "registration-success.html";
+                showToast(
+                    "Rider registration not found.",
+                    "error"
+                );
+
+                return;
+            }
+
+            const client = snapshot.val();
+
+            if (client.otpVerified === true) {
+                hideLoader();
+
+                showToast(
+                    "This rider's phone is already verified.",
+                    "info"
+                );
+
+                return;
+            }
+
+            sessionStorage.setItem(
+                "pendingRegistrationId",
+                registrationId
+            );
+
+            sessionStorage.setItem(
+                "pendingRegistrationType",
+                "rider"
+            );
+
+            sessionStorage.setItem(
+                "pendingRegistrationPhone",
+                client.phone || ""
+            );
+
+            sessionStorage.setItem(
+                "pendingRegistrationName",
+                client.fullName || ""
+            );
+
+            hideLoader();
+
+            window.location.href =
+                "verify-otp.html";
+
+        } catch (error) {
+            console.error(
+                "Start verification error:",
+                error
+            );
+
+            hideLoader();
+
+            showToast(
+                "Unable to start verification.",
+                "error"
+            );
+        }
     }
-}, 600);
-    } catch (error) {
-        console.error(error);
-        showToast("Unable to start verification.", "error");
-    }
-});
+);
 
 
 function clearPendingRegistration() {
