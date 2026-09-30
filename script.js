@@ -2098,19 +2098,16 @@ if (otpForm) {
             }
 
             hideLoader();
+showToast(data.message || "Phone number verified successfully.", "success");
 
-            showToast(
-                data.message ||
-                "Phone number verified successfully.",
-                "success"
-            );
+sessionStorage.setItem("lastRegistrationId", registrationId);
+sessionStorage.setItem("lastRegistrationType", "rider");
 
-            clearPendingRegistration();
+clearPendingRegistration();
 
-            setTimeout(() => {
-                window.location.href =
-                    "registration-success.html";
-            }, 800);
+setTimeout(() => {
+    window.location.href = "registration-success.html";
+}, 800);
 
         } catch (error) {
             console.error("OTP verification error:", error);
@@ -2134,8 +2131,218 @@ if (otpForm) {
 
 
 
+// ================= REGISTRATION SUCCESS =================
+
+if ($("registeredRiderName")) {
+    onAuthStateChanged(auth, async user => {
+        if (!user) {
+            window.location.href = "index.html";
+            return;
+        }
+
+        const registrationId =
+            sessionStorage.getItem("lastRegistrationId") ||
+            sessionStorage.getItem("pendingRegistrationId");
+
+        const registrationType =
+            sessionStorage.getItem("lastRegistrationType") ||
+            sessionStorage.getItem("pendingRegistrationType");
+
+        if (!registrationId || !registrationType) {
+            $("registeredRiderName").textContent = "Registration Completed";
+            return;
+        }
+
+        try {
+            const path = registrationType === "rider"
+                ? `bodaProgram/riders/${registrationId}`
+                : `bodaProgram/pregnantWomen/${registrationId}`;
+
+            const snapshot = await get(ref(database, path));
+
+            if (!snapshot.exists()) {
+                throw new Error("Registration not found.");
+            }
+
+            const client = snapshot.val();
+
+            $("registeredRiderName").textContent =
+                client.fullName || "Registered Client";
+
+            $("registeredRiderPhone").textContent =
+                formatPhone(client.phone || "");
+
+            if (registrationType === "rider") {
+                $("registrationSuccessTitle").textContent =
+                    "Rider Verified Successfully!";
+
+                $("registeredStageRow")?.classList.remove("hidden");
+
+                let stageName = "Not assigned";
+
+                if (client.stageId) {
+                    const stageSnapshot = await get(
+                        ref(database, `bodaProgram/stages/${client.stageId}`)
+                    );
+
+                    if (stageSnapshot.exists()) {
+                        const stage = stageSnapshot.val();
+                        stageName = stage.stageName || stage.area || "Registered Stage";
+                    }
+                }
+
+                $("registeredRiderStage").textContent = stageName;
+
+                $("registrationRewardLabel").textContent =
+                    "Registration Reward";
+
+                $("earnedCommission").textContent = "1,000";
+
+                $("registrationRewardMessage").textContent =
+                    "UGX 1,000 commission earned for this verified rider.";
+
+                $("registrationSuccessMessage").textContent =
+                    "The rider's phone number has been verified successfully.";
+            } else {
+                $("registrationSuccessTitle").textContent =
+                    "Registration Successful!";
+
+                $("registeredStageRow")?.classList.add("hidden");
+
+                $("registrationRewardLabel").textContent =
+                    "Referral Status";
+
+                $("earnedCommission").textContent = "0";
+
+                $("registrationRewardMessage").textContent =
+                    "UGX 500 will be earned after the maternal referral is approved.";
+
+                $("registrationSuccessMessage").textContent =
+                    "Maternal referral registered successfully.";
+
+                if ($("registerAnotherBtn")) {
+                    $("registerAnotherBtn").href = "register-rider.html";
+                }
+            }
+
+        } catch (error) {
+            console.error("Success page error:", error);
+            showToast("Unable to load registration information.", "error");
+        }
+    });
+}
 
 
+// ================= EARNINGS PAGE =================
+
+if ($("earningsTotal")) {
+    onAuthStateChanged(auth, user => {
+        if (!user) {
+            window.location.href = "index.html";
+            return;
+        }
+
+        const commissionsRef = ref(
+            database,
+            "bodaProgram/commissions"
+        );
+
+        onValue(commissionsRef, snapshot => {
+            let total = 0;
+            let monthTotal = 0;
+            let monthCount = 0;
+            let pendingTotal = 0;
+            const payouts = [];
+
+            const now = new Date();
+
+            snapshot.forEach(childSnapshot => {
+                const commission = childSnapshot.val() || {};
+
+                if (commission.marketerId !== user.uid) return;
+
+                const amount = Number(commission.amount || 0);
+
+                total += amount;
+
+                if (commission.status === "pending") {
+                    pendingTotal += amount;
+                }
+
+                const created = new Date(
+                    Number(commission.createdAt || 0)
+                );
+
+                if (
+                    created.getMonth() === now.getMonth() &&
+                    created.getFullYear() === now.getFullYear()
+                ) {
+                    monthTotal += amount;
+                    monthCount++;
+                }
+
+                if (commission.status === "paid") {
+                    payouts.push(commission);
+                }
+            });
+
+            $("earningsTotal").textContent =
+                formatMoney(total);
+
+            $("monthEarnings").textContent =
+                `UGX ${formatMoney(monthTotal)}`;
+
+            $("monthRiders").textContent =
+                monthCount;
+
+            $("pendingEarnings").textContent =
+                `UGX ${formatMoney(pendingTotal)}`;
+
+            displayPayoutHistory(payouts);
+        });
+    });
+}
+
+function displayPayoutHistory(payouts) {
+    const container = $("payoutHistory");
+
+    if (!container) return;
+
+    if (!payouts.length) {
+        container.innerHTML = `
+            <div class="empty-state">
+                No payouts yet.
+            </div>
+        `;
+        return;
+    }
+
+    payouts.sort(
+        (a, b) =>
+            Number(b.paidAt || 0) -
+            Number(a.paidAt || 0)
+    );
+
+    container.innerHTML = payouts.map(payout => `
+        <div class="detail-row">
+            <div class="detail-row-content">
+                <small>
+                    ${payout.riderId ? "Boda Boda Rider Commission" : "Referral Commission"}
+                </small>
+
+                <strong>
+                    UGX ${formatMoney(Number(payout.amount || 0))}
+                </strong>
+
+                <small>
+                    ${payout.paidAt
+                        ? formatDate(payout.paidAt)
+                        : "Paid"}
+                </small>
+            </div>
+        </div>
+    `).join("");
+}
 
 
 // ================= MY REGISTRATIONS =================
