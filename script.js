@@ -2031,15 +2031,25 @@ if (otpForm) {
         }
     }
 
-    $("sendOtpBtn")?.addEventListener("click", async () => {
-        await sendOTP();
-    });
+   // ================= AUTO SEND OTP =================
 
-    // ================= RESEND OTP =================
+// Hide the manual Send OTP button
+$("sendOtpBtn")?.classList.add("hidden");
 
-    $("resendOtpBtn")?.addEventListener("click", async () => {
-        await sendOTP();
-    });
+// Automatically send OTP when verification page opens
+if (
+    registrationId &&
+    registrationType === "rider" &&
+    registrationPhone
+) {
+    sendOTP();
+}
+
+// ================= RESEND OTP =================
+
+$("resendOtpBtn")?.addEventListener("click", async () => {
+    await sendOTP();
+});
 
     // ================= VERIFY OTP =================
 
@@ -2224,7 +2234,11 @@ if ($("registeredRiderName")) {
                     $("registerAnotherBtn").href = "register-rider.html";
                 }
             }
+$("registrationSuccessContent")?.classList.remove("hidden");
 
+setTimeout(() => {
+    $("successPageLoader")?.classList.add("hide");
+}, 250);
         } catch (error) {
             console.error("Success page error:", error);
             showToast("Unable to load registration information.", "error");
