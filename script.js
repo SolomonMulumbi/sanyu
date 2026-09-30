@@ -9,10 +9,9 @@ import {
     createUserWithEmailAndPassword,
     GoogleAuthProvider,
     signInWithPopup,
-    signOut,
-    RecaptchaVerifier,
-    signInWithPhoneNumber
+    signOut
 } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js";
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyCi_hufIZTzsYtdPGQtvtmKmAkkrydmn_A",
@@ -32,14 +31,7 @@ const storage = getStorage(app);
 const $ = id => document.getElementById(id);
 
 // Separate Firebase app used only for client phone OTP.
-// This prevents OTP verification from replacing the marketer's login.
-const phoneVerificationApp = initializeApp(
-    firebaseConfig,
-    "phoneVerificationApp"
-);
 
-const phoneAuth = getAuth(phoneVerificationApp);
-phoneAuth.useDeviceLanguage();
 
 
 const loginForm = $("loginForm");
@@ -86,76 +78,260 @@ $("createAccountBtn")?.addEventListener("click", () => {
 });
 
 
-const marketerRegistrationForm = $("marketeerRegistrationForm");
+// ================= CREATE MARKETEER ACCOUNT =================
+
+const marketerRegistrationForm =
+    $("marketeerRegistrationForm");
 
 if (marketerRegistrationForm) {
-    marketerRegistrationForm.addEventListener("submit", async e => {
-        e.preventDefault();
 
-        const fullName = $("marketeerFullName").value.trim();
-        const phone = normalizePhone($("marketeerPhone").value);
-        const email = $("marketeerEmail").value.trim().toLowerCase();
-        const password = $("marketeerPassword").value;
-        const confirmPassword = $("confirmPassword").value;
+    marketerRegistrationForm.addEventListener(
+        "submit",
+        async e => {
 
-        if (!fullName || !phone || !email || !password) {
-            showToast("Complete all required fields.", "error");
-            return;
+            e.preventDefault();
+
+            const fullName =
+                $("marketeerFullName").value.trim();
+
+            const phone =
+                normalizePhone(
+                    $("marketeerPhone").value
+                );
+
+            const email =
+                $("marketeerEmail")
+                    .value
+                    .trim()
+                    .toLowerCase();
+
+            const password =
+                $("marketeerPassword").value;
+
+            const confirmPassword =
+                $("confirmPassword").value;
+
+            const createButton =
+                $("createMarketeerBtn");
+
+
+            // ================= VALIDATION =================
+
+            if (
+                !fullName ||
+                !phone ||
+                !email ||
+                !password ||
+                !confirmPassword
+            ) {
+                showToast(
+                    "Complete all required fields.",
+                    "error"
+                );
+                return;
+            }
+
+
+            if (
+                phone.length !== 12 ||
+                !phone.startsWith("256")
+            ) {
+                showToast(
+                    "Enter a valid Ugandan phone number.",
+                    "error"
+                );
+                return;
+            }
+
+
+            if (password.length < 6) {
+                showToast(
+                    "Password must have at least 6 characters.",
+                    "error"
+                );
+                return;
+            }
+
+
+            if (password !== confirmPassword) {
+                showToast(
+                    "Passwords do not match.",
+                    "error"
+                );
+                return;
+            }
+
+
+            try {
+
+                // Prevent double clicking
+                if (createButton) {
+                    createButton.disabled = true;
+                    createButton.textContent =
+                        "Creating Account...";
+                }
+
+                showLoader(
+                    "Creating your account..."
+                );
+
+
+                // ================= FIREBASE AUTH =================
+
+                const credential =
+                    await createUserWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+                const user =
+                    credential.user;
+
+
+                // ================= MARKETEER PROFILE =================
+
+                const marketerData = {
+
+                    uid: user.uid,
+
+                    fullName: fullName,
+
+                    phone: phone,
+
+                    email: email,
+
+                    photoURL:
+                        user.photoURL || "",
+
+                    status: "active",
+
+                    createdAt:
+                        Date.now()
+                };
+
+
+                await set(
+                    ref(
+                        database,
+                        `bodaProgram/marketers/${user.uid}`
+                    ),
+                    marketerData
+                );
+
+
+                console.log(
+                    "Marketeer account created:",
+                    marketerData
+                );
+
+
+                hideLoader();
+
+                showToast(
+                    "Account created successfully.",
+                    "success"
+                );
+
+
+                marketerRegistrationForm.reset();
+
+
+                setTimeout(() => {
+
+                    window.location.href =
+                        "dashboard.html";
+
+                }, 700);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Create account error:",
+                    error
+                );
+
+                hideLoader();
+
+
+                let message =
+                    "Failed to create account.";
+
+
+                if (
+                    error.code ===
+                    "auth/email-already-in-use"
+                ) {
+
+                    message =
+                        "An account already exists with this email.";
+
+                }
+
+                else if (
+                    error.code ===
+                    "auth/invalid-email"
+                ) {
+
+                    message =
+                        "Enter a valid email address.";
+
+                }
+
+                else if (
+                    error.code ===
+                    "auth/weak-password"
+                ) {
+
+                    message =
+                        "Password must have at least 6 characters.";
+
+                }
+
+                else if (
+                    error.code ===
+                    "auth/network-request-failed"
+                ) {
+
+                    message =
+                        "Network error. Check your internet connection.";
+
+                }
+
+                else if (
+                    error.code ===
+                    "auth/operation-not-allowed"
+                ) {
+
+                    message =
+                        "Email and password account creation is not enabled.";
+
+                }
+
+
+                showToast(
+                    message,
+                    "error"
+                );
+
+
+                // Re-enable button
+                if (createButton) {
+
+                    createButton.disabled =
+                        false;
+
+                    createButton.textContent =
+                        "Create Account";
+                }
+
+            }
+
         }
+    );
 
-        if (phone.length !== 12 || !phone.startsWith("256")) {
-            showToast("Enter a valid Ugandan phone number.", "error");
-            return;
-        }
-
-        if (password.length < 6) {
-            showToast("Password must have at least 6 characters.", "error");
-            return;
-        }
-
-        if (password !== confirmPassword) {
-            showToast("Passwords do not match.", "error");
-            return;
-        }
-
-        try {
-            showLoader("Creating account...");
-
-            const credential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = credential.user;
-
-            await set(ref(database, `bodaProgram/marketers/${user.uid}`), {
-                uid: user.uid,
-                fullName,
-                phone,
-                email,
-                status: "active",
-                createdAt: Date.now()
-            });
-
-            hideLoader();
-            showToast("Account created successfully.", "success");
-
-            setTimeout(() => {
-                window.location.href = "dashboard.html";
-            }, 700);
-
-        } catch (error) {
-            console.error(error);
-            hideLoader();
-
-            let message = "Failed to create account.";
-
-            if (error.code === "auth/email-already-in-use") message = "That email already has an account.";
-            else if (error.code === "auth/invalid-email") message = "Enter a valid email address.";
-            else if (error.code === "auth/weak-password") message = "Choose a stronger password.";
-
-            showToast(message, "error");
-        }
-    });
 }
-
-
 
 
 
@@ -1369,43 +1545,218 @@ function loadDashboardEarnings(marketerId) {
 
 
 
-
-
 // ================= PROFILE =================
 
 const profileName = $("profileName");
 
 if (profileName) {
+
     onAuthStateChanged(auth, async user => {
+
         if (!user) {
             window.location.href = "index.html";
             return;
         }
 
         try {
-            const snapshot = await get(ref(database, `bodaProgram/marketers/${user.uid}`));
+
+            showLoader("Loading profile...");
+
+            const profileRef = ref(
+                database,
+                `bodaProgram/marketers/${user.uid}`
+            );
+
+            let snapshot = await get(profileRef);
+            let marketer;
+
+            // ================= CREATE PROFILE IF MISSING =================
 
             if (!snapshot.exists()) {
-                showToast("Profile information not found.", "error");
-                return;
+
+                const fallbackName =
+                    user.displayName ||
+                    user.email?.split("@")[0] ||
+                    "Marketer";
+
+                marketer = {
+                    uid: user.uid,
+                    fullName: fallbackName,
+                    phone: user.phoneNumber || "",
+                    email: user.email || "",
+                    photoURL: user.photoURL || "",
+                    status: "active",
+                    createdAt: Date.now()
+                };
+
+                await set(profileRef, marketer);
+
+            } else {
+
+                marketer = snapshot.val();
+
             }
 
-            const marketer = snapshot.val();
-            profileName.textContent = marketer.fullName || "Marketer";
 
-            const names = (marketer.fullName || "M").trim().split(/\s+/);
-            let initials = names[0]?.charAt(0) || "M";
-            if (names.length > 1) initials += names[names.length - 1].charAt(0);
+            // ================= NAME =================
 
-            if ($("profileInitials")) $("profileInitials").textContent = initials.toUpperCase();
+            const fullName =
+                marketer.fullName ||
+                user.displayName ||
+                "Marketer";
+
+            profileName.textContent = fullName;
+
+
+            // ================= INITIALS =================
+
+            const names = fullName
+                .trim()
+                .split(/\s+/)
+                .filter(Boolean);
+
+            let initials =
+                names[0]?.charAt(0) || "M";
+
+            if (names.length > 1) {
+                initials +=
+                    names[names.length - 1]
+                        ?.charAt(0) || "";
+            }
+
+            const profileInitials =
+                $("profileInitials");
+
+            if (profileInitials) {
+                profileInitials.textContent =
+                    initials.toUpperCase();
+            }
+
+
+            // ================= EMAIL =================
+
+            if ($("profileEmail")) {
+
+                $("profileEmail").textContent =
+                    marketer.email ||
+                    user.email ||
+                    "Not provided";
+
+            }
+
+
+            // ================= PHONE =================
+
+            if ($("profilePhone")) {
+
+                $("profilePhone").textContent =
+                    marketer.phone
+                        ? formatPhone(marketer.phone)
+                        : "Not provided";
+
+            }
+
+
+            // ================= PROFILE PHOTO =================
+
+            const profilePhoto =
+                $("profilePhoto");
+
+            let photoURL =
+                marketer.photoURL ||
+                user.photoURL ||
+                "";
+
+            // Check Google provider
+            if (!photoURL && user.providerData) {
+
+                const googleProvider =
+                    user.providerData.find(
+                        provider =>
+                            provider.providerId === "google.com"
+                    );
+
+                if (googleProvider?.photoURL) {
+                    photoURL =
+                        googleProvider.photoURL;
+                }
+
+            }
+
+            console.log(
+                "PROFILE PHOTO URL:",
+                photoURL
+            );
+
+
+            if (profilePhoto && photoURL) {
+
+                profilePhoto.onload = () => {
+
+                    profilePhoto
+                        .classList
+                        .remove("hidden");
+
+                    profileInitials
+                        ?.classList
+                        .add("hidden");
+
+                };
+
+                profilePhoto.onerror = () => {
+
+                    console.log(
+                        "Profile picture failed to load:",
+                        photoURL
+                    );
+
+                    profilePhoto
+                        .classList
+                        .add("hidden");
+
+                    profileInitials
+                        ?.classList
+                        .remove("hidden");
+
+                };
+
+                profilePhoto.src =
+                    photoURL;
+
+            } else {
+
+                profilePhoto
+                    ?.classList
+                    .add("hidden");
+
+                profileInitials
+                    ?.classList
+                    .remove("hidden");
+
+            }
+
+
+            hideLoader();
 
         } catch (error) {
-            console.error("Profile error:", error);
-            showToast("Failed to load profile.", "error");
-        }
-    });
-}
 
+            console.error(
+                "Profile error:",
+                error
+            );
+
+            hideLoader();
+
+            showToast(
+                "Failed to load profile.",
+                "error"
+            );
+
+        }
+
+    });
+
+}
 $("logoutBtn")?.addEventListener("click", async () => {
     try {
         showLoader("Signing out...");
@@ -1521,216 +1872,57 @@ registrationTypeButtons.forEach(button => {
     });
 });
 
-// ================= FIREBASE PHONE OTP =================
+// ================= AFRICA'S TALKING OTP =================
 
+const OTP_API = "https://sanyu-woad.vercel.app/api";
 const otpForm = $("otpForm");
-
-let confirmationResult = null;
-let recaptchaVerifier = null;
-let recaptchaWidgetId = null;
 
 if (otpForm) {
     const otpInputs = document.querySelectorAll(".otp-digit");
+    const registrationId = sessionStorage.getItem("pendingRegistrationId");
+    const registrationType = sessionStorage.getItem("pendingRegistrationType");
+    const registrationPhone = sessionStorage.getItem("pendingRegistrationPhone");
+    const registrationName = sessionStorage.getItem("pendingRegistrationName");
 
-    const registrationId =
-        sessionStorage.getItem("pendingRegistrationId");
+    let otpSent = false;
+    let sendingOtp = false;
 
-    const registrationType =
-        sessionStorage.getItem("pendingRegistrationType");
-
-    const registrationPhone =
-        sessionStorage.getItem("pendingRegistrationPhone");
-
-    const registrationName =
-        sessionStorage.getItem("pendingRegistrationName");
-
-    if (!registrationId ||
-        !registrationType ||
-        !registrationPhone) {
-
-        showToast(
-            "No pending registration found.",
-            "error"
-        );
+    if (!registrationId || registrationType !== "rider" || !registrationPhone) {
+        showToast("No pending rider registration found.", "error");
 
         setTimeout(() => {
-            window.location.href = "register.html";
+            window.location.href = "register-rider.html";
         }, 1200);
-
     } else {
+        if ($("otpPhoneNumber")) {
+            $("otpPhoneNumber").textContent = formatPhone(registrationPhone);
+        }
 
-        $("otpPhoneNumber").textContent =
-            formatPhone(registrationPhone);
+        if ($("otpRegistrationName")) {
+            $("otpRegistrationName").textContent = registrationName || "";
+        }
 
-        $("otpRegistrationName").textContent =
-            registrationName || "";
+        if ($("otpRegistrationType")) {
+            $("otpRegistrationType").textContent = "Boda Boda Rider";
+        }
 
-        $("otpRegistrationType").textContent =
-            registrationType === "rider"
-                ? "Boda Boda Rider"
-                : "Pregnant Woman";
-
-        setupPhoneVerification();
+        // Firebase reCAPTCHA is no longer required.
+        $("recaptchaLoading")?.classList.add("hidden");
+        $("recaptcha-container")?.classList.add("hidden");
     }
-
-
-    // ================= RECAPTCHA =================
-async function setupPhoneVerification() {
-    const loading = $("recaptchaLoading");
-    const container = $("recaptcha-container");
-
-    try {
-        loading?.classList.remove("hidden");
-
-        if (container) {
-            container.style.visibility = "hidden";
-        }
-
-        recaptchaVerifier = new RecaptchaVerifier(
-            "recaptcha-container",
-            {
-                size: "normal",
-
-                callback: () => {
-                    console.log("reCAPTCHA completed");
-                },
-
-                "expired-callback": () => {
-                    confirmationResult = null;
-
-                    showToast(
-                        "Security check expired. Please complete it again.",
-                        "error"
-                    );
-                }
-            },
-            phoneAuth
-        );
-
-        recaptchaWidgetId =
-            await recaptchaVerifier.render();
-
-        if (container) {
-            container.style.visibility = "visible";
-        }
-
-        loading?.classList.add("hidden");
-const sendButton = $("sendOtpBtn");
-
-if (sendButton) {
-    sendButton.disabled = false;
-}
-        console.log("Firebase reCAPTCHA ready");
-
-    } catch (error) {
-        console.error("reCAPTCHA error:", error);
-
-        loading?.classList.add("hidden");
-
-        if (container) {
-            container.style.visibility = "visible";
-        }
-
-        showToast(
-            "Unable to load the security check. Please refresh and try again.",
-            "error"
-        );
-    }
-}
-
-    // ================= SEND OTP =================
-
-    async function sendFirebaseOTP() {
-        if (!recaptchaVerifier) {
-            showToast(
-                "Phone verification is still loading.",
-                "error"
-            );
-
-            return;
-        }
-
-        const phone =
-            "+" + normalizePhone(registrationPhone);
-
-        try {
-            showLoader(
-                "Sending verification code..."
-            );
-
-            confirmationResult =
-                await signInWithPhoneNumber(
-                    phoneAuth,
-                    phone,
-                    recaptchaVerifier
-                );
-
-            hideLoader();
-
-            showToast(
-                "Verification code sent.",
-                "success"
-            );
-
-            if ($("otpDescription")) {
-                $("otpDescription").textContent =
-                    "Enter the 6-digit verification code sent to";
-            }
-
-            otpInputs[0]?.focus();
-
-        } catch (error) {
-            console.error(
-                "Send OTP error:",
-                error
-            );
-
-            hideLoader();
-
-            handleOTPError(error);
-
-            resetRecaptcha();
-        }
-    }
-
-
-    // ================= RESET RECAPTCHA =================
-
-    function resetRecaptcha() {
-        if (
-            window.grecaptcha &&
-            recaptchaWidgetId !== null
-        ) {
-            window.grecaptcha.reset(
-                recaptchaWidgetId
-            );
-        }
-
-        confirmationResult = null;
-    }
-
 
     // ================= OTP INPUTS =================
 
     otpInputs.forEach((input, index) => {
-
         input.addEventListener("input", () => {
+            input.value = input.value.replace(/\D/g, "").slice(0, 1);
 
-            input.value = input.value
-                .replace(/\D/g, "")
-                .slice(0, 1);
-
-            if (
-                input.value &&
-                index < otpInputs.length - 1
-            ) {
+            if (input.value && index < otpInputs.length - 1) {
                 otpInputs[index + 1].focus();
             }
         });
 
-
         input.addEventListener("keydown", e => {
-
             if (
                 e.key === "Backspace" &&
                 !input.value &&
@@ -1740,26 +1932,19 @@ if (sendButton) {
             }
         });
 
-
         input.addEventListener("paste", e => {
-
             e.preventDefault();
 
-            const pasted =
-                e.clipboardData
-                    .getData("text")
-                    .replace(/\D/g, "")
-                    .slice(0, 6);
+            const pasted = e.clipboardData
+                .getData("text")
+                .replace(/\D/g, "")
+                .slice(0, 6);
 
-            pasted
-                .split("")
-                .forEach((number, i) => {
-
-                    if (otpInputs[i]) {
-                        otpInputs[i].value =
-                            number;
-                    }
-                });
+            pasted.split("").forEach((number, i) => {
+                if (otpInputs[i]) {
+                    otpInputs[i].value = number;
+                }
+            });
 
             if (pasted.length === 6) {
                 otpInputs[5]?.focus();
@@ -1767,310 +1952,185 @@ if (sendButton) {
         });
     });
 
+    // ================= SEND OTP =================
+
+    async function sendOTP() {
+        if (!registrationId || sendingOtp) return;
+
+        const sendButton = $("sendOtpBtn");
+
+        try {
+            sendingOtp = true;
+
+            if (sendButton) {
+                sendButton.disabled = true;
+                sendButton.textContent = "Sending...";
+            }
+
+            showLoader("Sending verification code...");
+
+            const response = await fetch(`${OTP_API}/send-otp`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    registrationId
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(
+                    data.message ||
+                    "Unable to send verification code."
+                );
+            }
+
+            otpSent = true;
+
+            hideLoader();
+
+            showToast(
+                data.message || "Verification code sent.",
+                "success"
+            );
+
+            if ($("otpDescription")) {
+                $("otpDescription").textContent =
+                    "Enter the 6-digit verification code sent to";
+            }
+
+            if (sendButton) {
+                sendButton.classList.add("hidden");
+            }
+
+            $("resendOtpBtn")?.classList.remove("hidden");
+
+            otpInputs[0]?.focus();
+
+        } catch (error) {
+            console.error("Send OTP error:", error);
+
+            hideLoader();
+
+            showToast(
+                error.message ||
+                "Unable to send verification code.",
+                "error"
+            );
+
+        } finally {
+            sendingOtp = false;
+
+            if (sendButton) {
+                sendButton.disabled = false;
+                sendButton.textContent = "Send Verification Code";
+            }
+        }
+    }
+
+    $("sendOtpBtn")?.addEventListener("click", async () => {
+        await sendOTP();
+    });
+
+    // ================= RESEND OTP =================
+
+    $("resendOtpBtn")?.addEventListener("click", async () => {
+        await sendOTP();
+    });
 
     // ================= VERIFY OTP =================
 
-    otpForm.addEventListener(
-        "submit",
-        async e => {
+    otpForm.addEventListener("submit", async e => {
+        e.preventDefault();
 
-            e.preventDefault();
+        const otp = Array.from(otpInputs)
+            .map(input => input.value)
+            .join("");
 
-            const otp =
-                Array.from(otpInputs)
-                    .map(input => input.value)
-                    .join("");
-
-            if (otp.length !== 6) {
-
-                showToast(
-                    "Enter the complete 6-digit code.",
-                    "error"
-                );
-
-                return;
-            }
-
-            if (!confirmationResult) {
-
-                showToast(
-                    "Send the verification code first.",
-                    "error"
-                );
-
-                return;
-            }
-
-            try {
-
-                showLoader(
-                    "Verifying phone number..."
-                );
-
-                const result =
-                    await confirmationResult.confirm(
-                        otp
-                    );
-
-                const verifiedPhone =
-                    result.user.phoneNumber || "";
-
-                console.log(
-                    "Verified Firebase phone:",
-                    verifiedPhone
-                );
-
-                await completeClientVerification(
-                    registrationId,
-                    registrationType,
-                    result.user.uid,
-                    verifiedPhone
-                );
-
-                // Sign client out of SECONDARY auth only.
-                await signOut(phoneAuth);
-
-                hideLoader();
-
-                showToast(
-                    "Phone number verified successfully.",
-                    "success"
-                );
-
-                clearPendingRegistration();
-
-                setTimeout(() => {
-
-                    window.location.href =
-                        "registration-success.html";
-
-                }, 800);
-
-            } catch (error) {
-
-                console.error(
-                    "OTP verification error:",
-                    error
-                );
-
-                hideLoader();
-
-                handleOTPError(error);
-            }
+        if (otp.length !== 6) {
+            showToast(
+                "Enter the complete 6-digit code.",
+                "error"
+            );
+            return;
         }
-    );
 
+        if (!otpSent) {
+            showToast(
+                "Send the verification code first.",
+                "error"
+            );
+            return;
+        }
 
-    // ================= RESEND =================
+        const verifyButton =
+            otpForm.querySelector('button[type="submit"]');
 
-    $("resendOtpBtn")?.addEventListener(
-        "click",
-        async () => {
+        try {
+            if (verifyButton) {
+                verifyButton.disabled = true;
+                verifyButton.textContent = "Verifying...";
+            }
 
-            resetRecaptcha();
+            showLoader("Verifying phone number...");
+
+            const response = await fetch(`${OTP_API}/verify-otp`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    registrationId,
+                    otp
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(
+                    data.message ||
+                    "Verification failed."
+                );
+            }
+
+            hideLoader();
 
             showToast(
-                "Complete reCAPTCHA again to resend the code.",
-                "info"
+                data.message ||
+                "Phone number verified successfully.",
+                "success"
             );
-        }
-    );
 
-$("sendOtpBtn")?.addEventListener(
-    "click",
-    async () => {
+            clearPendingRegistration();
 
-        await sendFirebaseOTP();
+            setTimeout(() => {
+                window.location.href =
+                    "registration-success.html";
+            }, 800);
 
-        if (confirmationResult) {
-            $("sendOtpBtn").classList.add(
-                "hidden"
+        } catch (error) {
+            console.error("OTP verification error:", error);
+
+            hideLoader();
+
+            showToast(
+                error.message ||
+                "Unable to verify the code.",
+                "error"
             );
+
+        } finally {
+            if (verifyButton) {
+                verifyButton.disabled = false;
+                verifyButton.textContent = "Verify Registration";
+            }
         }
-    }
-);
-    // ================= OTP ERRORS =================
-
-    function handleOTPError(error) {
-
-        let message =
-            "Phone verification failed.";
-
-        if (
-            error.code ===
-            "auth/invalid-verification-code"
-        ) {
-            message =
-                "The verification code is incorrect.";
-        }
-
-        else if (
-            error.code ===
-            "auth/code-expired"
-        ) {
-            message =
-                "The verification code has expired.";
-        }
-
-        else if (
-            error.code ===
-            "auth/too-many-requests"
-        ) {
-            message =
-                "Too many attempts. Please try again later.";
-        }
-
-        else if (
-            error.code ===
-            "auth/invalid-phone-number"
-        ) {
-            message =
-                "The phone number is invalid.";
-        }
-
-        else if (
-            error.code ===
-            "auth/quota-exceeded"
-        ) {
-            message =
-                "Firebase SMS quota has been reached.";
-        }
-
-        else if (
-            error.code ===
-            "auth/captcha-check-failed"
-        ) {
-            message =
-                "reCAPTCHA verification failed.";
-        }
-
-        showToast(
-            message,
-            "error"
-        );
-    }
+    });
 }
-
-
-
-
-// ================= COMPLETE CLIENT VERIFICATION =================
-
-async function completeClientVerification(
-    registrationId,
-    registrationType,
-    phoneAuthUid,
-    verifiedPhone
-) {
-
-    const user = auth.currentUser;
-
-    if (!user) {
-        throw new Error(
-            "Marketer authentication was lost."
-        );
-    }
-
-    const databasePath =
-        registrationType === "rider"
-            ? `bodaProgram/riders/${registrationId}`
-            : `bodaProgram/pregnantWomen/${registrationId}`;
-
-    const registrationRef =
-        ref(database, databasePath);
-
-    const snapshot =
-        await get(registrationRef);
-
-    if (!snapshot.exists()) {
-        throw new Error(
-            "Registration does not exist."
-        );
-    }
-
-    const registration =
-        snapshot.val();
-
-    if (
-        registration.marketerId &&
-        registration.marketerId !== user.uid
-    ) {
-        throw new Error(
-            "Registration belongs to another marketer."
-        );
-    }
-
-    const expectedPhone =
-        normalizePhone(
-            registration.phone
-        );
-
-    const actualPhone =
-        normalizePhone(
-            verifiedPhone
-        );
-
-    if (
-        !expectedPhone ||
-        expectedPhone !== actualPhone
-    ) {
-        throw new Error(
-            "Verified phone number does not match registration."
-        );
-    }
-
-
-    // Already verified.
-    if (registration.otpVerified === true) {
-        return;
-    }
-
-
-    const updates = {};
-
-    updates[
-        `${databasePath}/otpVerified`
-    ] = true;
-
-    updates[
-        `${databasePath}/verifiedAt`
-    ] = Date.now();
-
-    updates[
-        `${databasePath}/status`
-    ] = "verified";
-
-    updates[
-        `${databasePath}/phoneAuthUid`
-    ] = phoneAuthUid;
-
-
-    // Commission currently applies to riders.
-    if (registrationType === "rider") {
-
-        const commissionId =
-            `rider_${registrationId}`;
-
-        updates[
-            `bodaProgram/commissions/${commissionId}`
-        ] = {
-            commissionId,
-            marketerId: user.uid,
-            riderId: registrationId,
-            amount: 1000,
-            status: "pending",
-            createdAt: Date.now(),
-            paidAt: null
-        };
-    }
-
-
-    await update(
-        ref(database),
-        updates
-    );
-}
-
 
 
 
@@ -2484,7 +2544,12 @@ function displayClientDetails(client, type) {
 
     $("detailClientPhone").textContent =
         formatPhone(client.phone || "");
+const callClientBtn = $("callClientBtn");
 
+if (callClientBtn && client.phone) {
+    callClientBtn.href =
+        `tel:+${normalizePhone(client.phone)}`;
+}
     $("detailMarketerName").textContent =
         client.marketerName || "Marketer";
 

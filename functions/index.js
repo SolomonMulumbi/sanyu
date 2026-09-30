@@ -1,148 +1,32 @@
-const { onValueUpdated } = require("firebase-functions/v2/database");
-const { initializeApp } = require("firebase-admin/app");
-const { getDatabase } = require("firebase-admin/database");
+/**
+ * Import function triggers from their respective submodules:
+ *
+ * const {onCall} = require("firebase-functions/v2/https");
+ * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
+ *
+ * See a full list of supported triggers at https://firebase.google.com/docs/functions
+ */
 
-initializeApp();
+const {setGlobalOptions} = require("firebase-functions");
+const {onRequest} = require("firebase-functions/https");
+const logger = require("firebase-functions/logger");
 
+// For cost control, you can set the maximum number of containers that can be
+// running at the same time. This helps mitigate the impact of unexpected
+// traffic spikes by instead downgrading performance. This limit is a
+// per-function limit. You can override the limit for each function using the
+// `maxInstances` option in the function's options, e.g.
+// `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
+// NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
+// functions should each use functions.runWith({ maxInstances: 10 }) instead.
+// In the v1 API, each function can only serve one request per container, so
+// this will be the maximum concurrent request count.
+setGlobalOptions({ maxInstances: 10 });
 
-// ================= RIDER COMMISSION =================
+// Create and deploy your first functions
+// https://firebase.google.com/docs/functions/get-started
 
-exports.createRiderCommission = onValueUpdated(
-    {
-        ref: "/bodaProgram/riders/{riderId}/otpVerified",
-        region: "europe-west1"
-    },
-    async event => {
-        const before = event.data.before.val();
-        const after = event.data.after.val();
-
-        if (before === true || after !== true) return;
-
-        const riderId = event.params.riderId;
-        const db = getDatabase();
-
-        const snapshot = await db
-            .ref(`bodaProgram/riders/${riderId}`)
-            .once("value");
-
-        if (!snapshot.exists()) return;
-
-        const rider = snapshot.val();
-
-        if (!rider.marketerId) return;
-
-        const commissionId = `rider_${riderId}`;
-
-        await createCommission(
-            commissionId,
-            {
-                commissionId,
-                marketerId: rider.marketerId,
-                registrationId: riderId,
-                registrationType: "rider",
-                amount: 1000,
-                status: "pending",
-                createdAt: Date.now(),
-                paidAt: null
-            }
-        );
-    }
-);
-
-
-// ================= PREGNANT WOMAN COMMISSION =================
-
-exports.createPregnantCommission = onValueUpdated(
-    {
-        ref: "/bodaProgram/pregnantWomen/{registrationId}/approved",
-        region: "europe-west1"
-    },
-    async event => {
-        const before = event.data.before.val();
-        const after = event.data.after.val();
-
-        if (before === true || after !== true) return;
-
-        const registrationId =
-            event.params.registrationId;
-
-        const db = getDatabase();
-
-        const snapshot = await db
-            .ref(
-                `bodaProgram/pregnantWomen/${registrationId}`
-            )
-            .once("value");
-
-        if (!snapshot.exists()) return;
-
-        const woman = snapshot.val();
-
-        if (!woman.marketerId) return;
-
-        // Commission requires both arrival and payment.
-        if (
-            woman.arrived !== true ||
-            woman.paymentConfirmed !== true
-        ) {
-            console.log(
-                "Pregnant registration not eligible:",
-                registrationId
-            );
-
-            return;
-        }
-
-        const commissionId =
-            `pregnant_${registrationId}`;
-
-        await createCommission(
-            commissionId,
-            {
-                commissionId,
-                marketerId: woman.marketerId,
-                registrationId,
-                registrationType: "pregnant",
-                amount: 500,
-                status: "pending",
-                createdAt: Date.now(),
-                paidAt: null
-            }
-        );
-    }
-);
-
-
-// ================= CREATE COMMISSION =================
-
-async function createCommission(
-    commissionId,
-    commission
-) {
-    const db = getDatabase();
-
-    const commissionRef = db.ref(
-        `bodaProgram/commissions/${commissionId}`
-    );
-
-    const result = await commissionRef.transaction(
-        current => {
-            if (current !== null) return;
-
-            return commission;
-        }
-    );
-
-    if (result.committed) {
-        console.log(
-            "Commission created:",
-            commissionId,
-            commission.amount
-        );
-    } else {
-        console.log(
-            "Commission already exists:",
-            commissionId
-        );
-    }
-}
+// exports.helloWorld = onRequest((request, response) => {
+//   logger.info("Hello logs!", {structuredData: true});
+//   response.send("Hello from Firebase!");
+// });

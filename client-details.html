@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Add Stage | SANYU HOSPITAL</title>
+  <title>Client Details | SANYU HOSPITAL</title>
 
   <link rel="icon" type="image/png" href="icon.png">
   <link rel="shortcut icon" type="image/png" href="icon.png">
@@ -17,96 +17,223 @@
 <body>
 
 <header class="page-header">
-  <a href="stages.html" class="back-btn">←</a>
-  <h1>Register Stage</h1>
+  <a href="riders.html" class="back-btn">←</a>
+  <h1>Registration Details</h1>
 </header>
 
 <main class="app-content">
 
-  <form id="stageRegistrationForm">
+  <!-- CLIENT PROFILE -->
+  <section class="client-detail-card">
 
-    <div class="form-group">
-      <label for="stageName">Stage Name *</label>
+    <div class="client-detail-profile">
 
-      <input
-        type="text"
-        id="stageName"
-        placeholder="Example: Entebbe Airport Stage"
-        required
-      >
+      <div
+        class="client-detail-avatar"
+        id="detailClientInitials">
+        --
+      </div>
+
+      <div class="client-detail-profile-info">
+
+        <span
+          class="client-detail-type"
+          id="detailClientType">
+          Loading...
+        </span>
+
+        <h2 id="detailClientName">
+          Loading...
+        </h2>
+
+        <span
+          class="client-status pending"
+          id="detailClientStatus">
+          Loading...
+        </span>
+
+      </div>
+
     </div>
 
-    <div class="form-group">
-      <label for="stageArea">Area / Location *</label>
+  </section>
 
-      <input
-        type="text"
-        id="stageArea"
-        placeholder="Example: Entebbe"
-        required
-      >
+
+  <!-- CONTACT INFORMATION -->
+  <section class="client-detail-card">
+
+    <h3 class="client-detail-section-title">
+      Contact Information
+    </h3>
+
+    <div class="client-detail-row">
+
+      <div class="client-detail-icon">
+        ☎
+      </div>
+
+      <div class="client-detail-info">
+        <span>PHONE NUMBER</span>
+
+        <strong id="detailClientPhone">
+          Loading...
+        </strong>
+      </div>
+
     </div>
 
-    <div class="form-group">
-      <label for="chairmanName">
-        Chairman / Stage Leader *
-      </label>
+  </section>
 
-      <input
-        type="text"
-        id="chairmanName"
-        placeholder="Chairman's full name"
-        required
-      >
+
+  <!-- RIDER INFORMATION -->
+  <section
+    class="client-detail-card hidden"
+    id="detailRiderSection">
+
+    <h3 class="client-detail-section-title">
+      Rider Information
+    </h3>
+
+    <div class="client-detail-row">
+
+      <div class="client-detail-icon">
+        🪪
+      </div>
+
+      <div class="client-detail-info">
+        <span>NATIONAL ID / NIN</span>
+
+        <strong id="detailClientNationalId">
+          Not provided
+        </strong>
+      </div>
+
     </div>
 
-    <div class="form-group">
-      <label for="chairmanPhone">
-        Chairman Phone *
-      </label>
 
-      <input
-        type="tel"
-        id="chairmanPhone"
-        placeholder="07XX XXX XXX"
-        required
-      >
+    <div class="client-detail-row">
+
+      <div class="client-detail-icon">
+        📍
+      </div>
+
+      <div class="client-detail-info">
+        <span>BODA BODA STAGE</span>
+
+        <strong id="detailClientStage">
+          Not provided
+        </strong>
+      </div>
+
     </div>
 
-    <div class="form-group">
-      <label for="stageDistrict">
-        District
-      </label>
+  </section>
 
-      <input
-        type="text"
-        id="stageDistrict"
-        placeholder="Example: Wakiso"
-      >
+
+  <!-- REGISTRATION INFORMATION -->
+  <section class="client-detail-card">
+
+    <h3 class="client-detail-section-title">
+      Registration Information
+    </h3>
+
+
+    <div class="client-detail-row">
+
+      <div class="client-detail-icon">
+        👤
+      </div>
+
+      <div class="client-detail-info">
+        <span>REGISTERED BY</span>
+
+        <strong id="detailMarketerName">
+          Loading...
+        </strong>
+      </div>
+
     </div>
 
-    <div class="form-group">
-      <label for="stageNotes">
-        Notes
-      </label>
 
-      <textarea
-        id="stageNotes"
-        placeholder="Additional information about the stage"></textarea>
+    <div class="client-detail-row">
+
+      <div class="client-detail-icon">
+        📅
+      </div>
+
+      <div class="client-detail-info">
+        <span>REGISTRATION DATE</span>
+
+        <strong id="detailRegistrationDate">
+          Loading...
+        </strong>
+      </div>
+
     </div>
 
-    <button
-      type="submit"
-      id="saveStageBtn"
-      class="primary-btn">
-      Register Stage
-    </button>
+  </section>
 
-  </form>
+
+  <!-- VERIFICATION -->
+  <section class="client-detail-card">
+
+    <h3 class="client-detail-section-title">
+      Verification
+    </h3>
+
+    <div class="client-detail-row">
+
+      <div class="client-detail-icon">
+        ✓
+      </div>
+
+      <div class="client-detail-info">
+        <span>VERIFICATION STATUS</span>
+
+        <strong id="detailVerificationStatus">
+          Loading...
+        </strong>
+      </div>
+
+    </div>
+
+
+    <!-- ONLY SHOWN FOR UNVERIFIED RIDERS -->
+    <div
+      id="verificationAction"
+      class="client-detail-action hidden">
+
+      <button
+        type="button"
+        id="verifyClientPhoneBtn"
+        class="primary-btn">
+
+        Verify Phone Number
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- CALL CLIENT -->
+  <section class="client-detail-actions">
+
+    <a
+      href="#"
+      id="callClientBtn"
+      class="primary-btn client-call-btn">
+      ☎ Call Client
+    </a>
+
+  </section>
 
 </main>
+
 
 <script src="script.js?v=21" type="module"></script>
 
 </body>
+
 </html>
